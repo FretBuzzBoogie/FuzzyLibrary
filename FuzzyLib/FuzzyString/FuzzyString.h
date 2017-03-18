@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <string>
+#include <memory>
 
 namespace FuzzyLib
 {
@@ -12,7 +13,7 @@ namespace FuzzyLib
 			int m_iCapacity = 1;
 			int m_iSize = 1;
 			char* m_cptrStrArr;
-			static const char NULL_TERMINATOR;
+			static char* const NULL_TERMINATOR;
 
 		///PUBLIC VARIABLES
 		public:
@@ -20,7 +21,8 @@ namespace FuzzyLib
 		///PRIVATE SOURCE
 		private:
 			void AllocateAndAssignStr(const char a_cptrInput[]);
-			int GetSizeOfPointedData(const char a_cptr[]);
+			static int GetSizeOfPointedData(const char a_cptr[]);
+			static char* AppendString(const char* a_cptr1, const char* a_cptr2);
 
 		///PUBLIC SOURCE
 		public:
@@ -31,15 +33,32 @@ namespace FuzzyLib
 
 			int GetCapacity() const;
 			int GetSize() const;
-			char* GetEmpty() const;
-			char* GetNullTerminator() const;
+			char* GetC_Str() const;
+
+			bool IsEqual(const FuzzyString &a_FuzzyString) const;
+			bool IsEqual(const char* a_cptrInput) const;
+			bool IsEqual(const std::string& a_strInput) const;
 			void DebugLog();
 
 			void operator=(const char a_cptrInput[]);
 			void operator=(const std::string& a_strInput);
+			void operator=(const FuzzyString& a_FuzzyStringInput);
+
+			FuzzyString operator+(const char a_cptrInput[]);
+			FuzzyString operator+(const std::string& a_strInput);
+			FuzzyString operator+(const FuzzyString a_FuzzyStringInput);
+
+			void operator+=(const FuzzyString& a_FuzzyStringInput);
+			void operator+=(const char* a_cptrInput);
+			void operator+=(const std::string& a_strInput);
+
+			friend void operator+=(char* &a_cptrInput, const FuzzyString& a_FuzzyString);
+			friend void operator+=(std::string &a_strInput, const FuzzyString& a_FuzzyString);
 
 			friend std::ostream& operator<<(std::ostream& out, const FuzzyString& a_FuzzyStr);
 			friend std::istream& operator>>(std::istream& in, const FuzzyString& a_FuzzyStr);
-
+			
+			static char* GetEmpty();
+			static char* GetNullTerminator();
 	};
 }
