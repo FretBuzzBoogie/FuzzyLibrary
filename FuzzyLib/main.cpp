@@ -4,21 +4,21 @@
 int main()
 {
 	using namespace FuzzyLib;
-	FuzzyString l_str("abcd");
-	l_str.DebugLog();
+	std::cout << "\nChar Ptr\n";
+	FuzzyString FuzzStr1 = "CharacterPointerAttempt";
+	FuzzStr1.DebugLog();
 
-	l_str += l_str;
-	l_str.DebugLog();
+	std::cout << "\nString\n";
+	std::string StdString = "StdStringPointerAttempt";
+	FuzzyString FuzzStr2 = StdString;
+	FuzzStr2.DebugLog();
 
-	l_str += "hello";
-	l_str.DebugLog();
+	std::cout << "\nFuzzyString\n";
+	FuzzyString FuzzTest("FuzzTestAttempt");
+	FuzzyString FuzzString = FuzzTest;
+	FuzzString.DebugLog();
 
-	FuzzyString l_str1("Hello ");
-	FuzzyString l_str2("Friend");
-	
-	/*l_str = l_str1 + "abcd";*/
-
-	l_str.DebugLog();
+	std::cout << "\n\n\n";
 
 	system("pause");
 	return 0;

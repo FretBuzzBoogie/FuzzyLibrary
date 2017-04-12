@@ -50,7 +50,7 @@ namespace FuzzyLib
 		memcpy_s(m_cptrStrArr, m_iCapacity, a_cptrInput, m_iSize);
 	}
 
-	///Gets the length of the array
+	////Gets the length of the array
 	int FuzzyString :: GetSizeOfPointedData(const char a_cptr[])
 	{
 		int l_iMultiplier = 1;
@@ -66,7 +66,7 @@ namespace FuzzyLib
 		return l_iSize;
 	}
 
-	///Returns the result of the concatenation of the 2 char pointers 
+	////Returns the result of the concatenation of the 2 char pointers 
 	char* FuzzyString::AppendString(const char* a_cptr1, const char* a_cptr2)
 	{
 		int l_iSize1 = FuzzyString::GetSizeOfPointedData(a_cptr1);
@@ -84,13 +84,19 @@ namespace FuzzyLib
 
 #pragma region Constructors
 
-	//Constructor to initialize the char ptr into the internal char array
+	////Copy constructor
+	FuzzyString::FuzzyString(FuzzyString &a_FuzzyString)
+	{
+		AllocateAndAssignStr(a_FuzzyString.m_cptrStrArr);
+	}
+
+	////Constructor to initialize the char ptr into the internal char array
 	FuzzyString::FuzzyString(const char a_cInputArr[] = FuzzyString::NULL_TERMINATOR)
 	{
 		AllocateAndAssignStr(a_cInputArr);
 	}
 
-	//Constructor to initialize the string into the internal char array
+	////Constructor to initialize the string into the internal char array
 	FuzzyString::FuzzyString(const std::string &a_strInput)
 	{
 		const char* l_cptrStrInput = a_strInput.c_str();
@@ -99,14 +105,14 @@ namespace FuzzyLib
 
 #pragma endregion Constructors
 
-	//Destructor to Destroy the FuzzyString Array
+	////Destructor to Destroy the FuzzyString Array
 	FuzzyString::~FuzzyString()
 	{
 		delete [] m_cptrStrArr;
 		m_cptrStrArr = nullptr;
 	}
 
-	//Compares FuzzyString object and another FuzzyString Object
+	////Compares FuzzyString object and another FuzzyString Object
 	bool FuzzyString :: IsEqual(const FuzzyString &a_FuzzyString) const
 	{
 		if (std::strcmp(this->m_cptrStrArr, a_FuzzyString.m_cptrStrArr) == 0)
@@ -116,7 +122,7 @@ namespace FuzzyLib
 		return false;
 	}
 
-	//Compares FuzzyString object and a char pointer
+	////Compares FuzzyString object and a char pointer
 	bool FuzzyString::IsEqual(const char* a_cptrInput) const
 	{
 		if (std::strcmp(this->m_cptrStrArr, a_cptrInput) == 0)
@@ -126,7 +132,7 @@ namespace FuzzyLib
 		return false;
 	}
 
-	//Compares FuzzyString object and a std::string object
+	////Compares FuzzyString object and a std::string object
 	bool FuzzyString::IsEqual(const std::string& a_strInput) const
 	{
 		if (std::strcmp(this->m_cptrStrArr, a_strInput.c_str()) == 0)
@@ -138,39 +144,32 @@ namespace FuzzyLib
 
 #pragma region Overriding
 
-	//Overides <<
+	////Overrides cout << a_FuzzyStr
 	std::ostream& operator<<(std::ostream& out, const FuzzyString& a_FuzzyStr)
 	{
 		out << a_FuzzyStr.m_cptrStrArr;
 		return out;
 	}
 
-	//Overides >>
-	std::istream& operator >> (std::istream& in, const FuzzyString& a_FuzzyStr)
-	{
-		in >> a_FuzzyStr.m_cptrStrArr;
-		return in;
-	}
-
-	//Overides FuzzyString1 = FuzzyString2
+	////Sets FuzzyString1 = FuzzyString2
 	void FuzzyString :: operator=(const FuzzyString& a_FuzzyStringInput)
 	{
 		this->AllocateAndAssignStr(a_FuzzyStringInput.m_cptrStrArr);
 	}
 
-	//Overides FuzzyString = cArray
+	////Sets FuzzyString = cArray
 	void FuzzyString:: operator=(const char a_cptrInput[])
 	{
 		AllocateAndAssignStr(a_cptrInput);
 	}
 
-	//Overides FuzzyString = std::string
+	////Sets FuzzyString.m_cptrStrArr = std::string
 	void FuzzyString:: operator=(const std::string& a_strInput )
 	{
 		AllocateAndAssignStr(a_strInput.c_str());
 	}
 
-	//Overrides FuzzyString1 += FuzzyString2
+	////Concatenates FuzzyString1 += FuzzyString2
 	void FuzzyString::operator+=(const FuzzyString& a_FuzzyStringInput)
 	{
 		char* l_cptrConcat = FuzzyString::AppendString(this->m_cptrStrArr, a_FuzzyStringInput.m_cptrStrArr);
@@ -180,7 +179,7 @@ namespace FuzzyLib
 		l_cptrConcat = nullptr;
 	}
 
-	//Overides FuzzyString += a_cptrInput
+	////Concatenates FuzzyString += a_cptrInput
 	void FuzzyString::operator+=(const char* a_cptrInput)
 	{
 		char* l_cptrConcat = FuzzyString::AppendString(this->m_cptrStrArr, a_cptrInput);
@@ -190,7 +189,7 @@ namespace FuzzyLib
 		l_cptrConcat = nullptr;
 	}
 
-	//Overides FuzzyString += a_strInput
+	////Concatenates FuzzyString += a_strInput
 	void FuzzyString:: operator+=(const std::string& a_strInput)
 	{
 		char* l_cptrConcat = FuzzyString::AppendString(this->m_cptrStrArr, a_strInput.c_str());
@@ -200,85 +199,103 @@ namespace FuzzyLib
 		l_cptrConcat = nullptr;
 	}
 
-	//Overides a_cptrInput += FuzzyString 
+	////Concatenates a_cptrInput += FuzzyString 
 	void operator+=(char* &a_cptrInput, const FuzzyString& a_FuzzyString)
 	{
-		delete[] a_cptrInput;
 		a_cptrInput = FuzzyString::AppendString(a_cptrInput, a_FuzzyString.m_cptrStrArr);
 	}
 
-	//Overides a_strInput += FuzzyString 
+	////Concatenates a_strInput += FuzzyString 
 	void operator+=(std::string &a_strInput, const FuzzyString& a_FuzzyString)
 	{
 		a_strInput = FuzzyString::AppendString(a_strInput.c_str(), a_FuzzyString.m_cptrStrArr);
 	}
 
-	////Overides FuzzyString + a_cptrInput
-	//FuzzyString FuzzyString :: operator+(const char a_cptrInput[])
-	//{
-	//	char* l_charConcat = FuzzyString::AppendString(this->m_cptrStrArr, a_cptrInput);
-	//	FuzzyString l_FuzzyString(l_charConcat);
+	////Concatenates FuzzyString + a_cptrInput
+	FuzzyString operator+(const FuzzyString& a_FuzzyString, const char a_cptrInput[])
+	{
+		char* l_charConcat = FuzzyString::AppendString(a_FuzzyString.m_cptrStrArr, a_cptrInput);
+		FuzzyString l_FuzzyStr(l_charConcat);
+		delete[] l_charConcat;
+		l_charConcat = nullptr;
 
-	//	delete[] l_charConcat;
-	//	l_charConcat = nullptr;
+		return l_FuzzyStr;
+	}
 
-	//	return l_FuzzyString;
-	//}
+	////Concatenates FuzzyString + a_strInput
+	FuzzyString operator+(const FuzzyString& a_FuzzyString, const std::string& a_strInput)
+	{
+		char* l_charConcat = FuzzyString::AppendString(a_FuzzyString.m_cptrStrArr, a_strInput.c_str());
+		FuzzyString l_FuzzyStr(l_charConcat);
+		delete[] l_charConcat;
+		l_charConcat = nullptr;
 
-	////Overides FuzzyString + a_strInput
-	//FuzzyString FuzzyString :: operator+(const std::string& a_strInput)
-	//{
-	//	char* l_charConcat = FuzzyString::AppendString(this->m_cptrStrArr, a_strInput.c_str());
-	//	FuzzyString l_FuzzyString(l_charConcat);
+		return l_FuzzyStr;
+	}
 
-	//	delete[] l_charConcat;
-	//	l_charConcat = nullptr;
+	////Concatenates a_FuzzyString1.m_cptrStrArr + a_FuzzyString2 to FuzzyString
+	FuzzyString operator+(const FuzzyString& a_FuzzyString1, const FuzzyString& a_FuzzyString2)
+	{
+		char* l_charConcat = FuzzyString::AppendString(a_FuzzyString1.m_cptrStrArr, a_FuzzyString2.m_cptrStrArr);
+		FuzzyString l_FuzzyStr(l_charConcat);
+		delete[] l_charConcat;
+		l_charConcat = nullptr;
 
-	//	return l_FuzzyString;
-	//}
+		return l_FuzzyStr;
+		;
+	}
 
-	////Overides FuzzyString + a_FuzzyStringInput
-	//FuzzyString FuzzyString :: operator+(const FuzzyString a_FuzzyStringInput)
-	//{
-	//	char* l_charConcat = FuzzyString::AppendString(this->m_cptrStrArr, a_FuzzyStringInput.m_cptrStrArr);
-	//	FuzzyString l_FuzzyString(l_charConcat);
+	////Concatenates a_cptrInput + FuzzyString
+	FuzzyString operator+(const char a_cptrInput[], const FuzzyString& a_FuzzyString)
+	{
+		char* l_charConcat = FuzzyString::AppendString(a_FuzzyString.m_cptrStrArr, a_cptrInput);
+		FuzzyString l_FuzzyStr(l_charConcat);
+		delete[] l_charConcat;
+		l_charConcat = nullptr;
 
-	//	delete[] l_charConcat;
-	//	l_charConcat = nullptr;
+		return l_FuzzyStr;
+	}
 
-	//	return l_FuzzyString;
-	//}
+	////Concatenates a_strInput + FuzzyString
+	FuzzyString operator+(const std::string& a_strInput, const FuzzyString& a_FuzzyString)
+	{
+		char* l_charConcat = FuzzyString::AppendString(a_FuzzyString.m_cptrStrArr, a_strInput.c_str());
+		FuzzyString l_FuzzyStr(l_charConcat);
+		delete[] l_charConcat;
+		l_charConcat = nullptr;
 
+		return l_FuzzyStr;
+	}
 
 #pragma endregion Overriding
 
 #pragma region Getters
 
-	//Returns the capacity of internal char array
+	////Returns the capacity of internal char array
 	int FuzzyString::GetCapacity() const
 	{
 		return m_iCapacity;
 	}
 
-	//Returns the size of internal char array
+	////Returns the size of internal char array
 	int FuzzyString::GetSize() const
 	{
 		return m_iSize;
 	}
 
-	//Returns the Empty char
+	////Returns the Empty char
 	char* FuzzyString::GetEmpty()
 	{
 		return NULL_TERMINATOR;
 	}
 
-	//Returns the Null terminator char
+	////Returns the Null terminator char
 	char* FuzzyString::GetNullTerminator()
 	{
 		return NULL_TERMINATOR;
 	}
 
-	//Returns the char pointer
+	////Returns the char pointer
 	char* FuzzyString :: GetC_Str() const
 	{
 		return m_cptrStrArr;
@@ -286,6 +303,7 @@ namespace FuzzyLib
 
 #pragma endregion Getters
 
+	////Logs the internal char ptr, the size and capacity
 	void FuzzyString::DebugLog()
 	{
 		std::cout << "FuzzyString ::'" << *this << "', Size::" <<

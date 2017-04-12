@@ -26,6 +26,7 @@ namespace FuzzyLib
 
 		///PUBLIC SOURCE
 		public:
+			FuzzyString(FuzzyString &a_FuzzyString);
 			FuzzyString(const char a_cptrInput[]);
 			FuzzyString(const std::string &a_strInput);
 
@@ -44,9 +45,12 @@ namespace FuzzyLib
 			void operator=(const std::string& a_strInput);
 			void operator=(const FuzzyString& a_FuzzyStringInput);
 
-			FuzzyString operator+(const char a_cptrInput[]);
-			FuzzyString operator+(const std::string& a_strInput);
-			FuzzyString operator+(const FuzzyString a_FuzzyStringInput);
+			friend FuzzyString operator+(const FuzzyString& a_FuzzyString, const char a_cptrInput[]);
+			friend FuzzyString operator+(const FuzzyString& a_FuzzyString, const std::string& a_strInput);
+			friend FuzzyString operator+(const FuzzyString& a_FuzzyString, const FuzzyString& a_FuzzyStringInput);
+
+			friend FuzzyString operator+(const char a_cptrInput[], const FuzzyString& a_FuzzyString);
+			friend FuzzyString operator+(const std::string& a_strInput, const FuzzyString& a_FuzzyString);
 
 			void operator+=(const FuzzyString& a_FuzzyStringInput);
 			void operator+=(const char* a_cptrInput);
@@ -56,7 +60,6 @@ namespace FuzzyLib
 			friend void operator+=(std::string &a_strInput, const FuzzyString& a_FuzzyString);
 
 			friend std::ostream& operator<<(std::ostream& out, const FuzzyString& a_FuzzyStr);
-			friend std::istream& operator>>(std::istream& in, const FuzzyString& a_FuzzyStr);
 			
 			static char* GetEmpty();
 			static char* GetNullTerminator();
