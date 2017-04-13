@@ -21,30 +21,13 @@ namespace FuzzyLib
 	void FuzzyString::AllocateAndAssignStr(const char a_cptrInput[])
 	{
 		int l_iSizeToAssign = GetSizeOfPointedData(a_cptrInput) + 1;
-		int l_iDoubleTheCapacity = 2 * m_iCapacity;
 		if (l_iSizeToAssign > m_iCapacity)
 		{
-			delete []m_cptrStrArr;
+			delete[] m_cptrStrArr;
 			m_cptrStrArr = nullptr;
 
 			m_cptrStrArr = new char[l_iSizeToAssign];
 			m_iCapacity = l_iSizeToAssign;
-
-			/*
-			If the a_cptrInput is more than double the size
-			allocate the capacity to the size of a_cptrInput 
-			else allocate the capacity to double the size of a_cptrInput.
-
-			if (l_iDoubleTheCapacity < l_iSizeToAssign)
-			{
-				m_cptrStrArr = new char[l_iSizeToAssign];
-				m_iCapacity = l_iSizeToAssign;
-			}
-			else
-			{
-				m_cptrStrArr = new char[l_iDoubleTheCapacity];
-				m_iCapacity = l_iDoubleTheCapacity;
-			}*/
 		}
 		m_iSize = l_iSizeToAssign;
 		memcpy_s(m_cptrStrArr, m_iCapacity, a_cptrInput, m_iSize);
@@ -64,6 +47,17 @@ namespace FuzzyLib
 		} while (l_iSize >= l_iSizeToCheck);
 
 		return l_iSize;
+	}
+
+	////Concatenates a_cptrInput1 + a_cptrInput2 to a FuzzyString
+	FuzzyString FuzzyString :: Concatenate(const char* a_cptrInput1, const char* a_cptrInput2)
+	{
+		char* l_charConcat = FuzzyString::AppendString(a_cptrInput1, a_cptrInput2);
+		FuzzyString l_FuzzyStr(l_charConcat);
+		delete[] l_charConcat;
+		l_charConcat = nullptr;
+
+		return l_FuzzyStr;
 	}
 
 	////Returns the result of the concatenation of the 2 char pointers 
@@ -154,7 +148,7 @@ namespace FuzzyLib
 	////Sets FuzzyString1 = FuzzyString2
 	void FuzzyString :: operator=(const FuzzyString& a_FuzzyStringInput)
 	{
-		this->AllocateAndAssignStr(a_FuzzyStringInput.m_cptrStrArr);
+		AllocateAndAssignStr(a_FuzzyStringInput.m_cptrStrArr);
 	}
 
 	////Sets FuzzyString = cArray
@@ -169,16 +163,6 @@ namespace FuzzyLib
 		AllocateAndAssignStr(a_strInput.c_str());
 	}
 
-	////Concatenates FuzzyString1 += FuzzyString2
-	void FuzzyString::operator+=(const FuzzyString& a_FuzzyStringInput)
-	{
-		char* l_cptrConcat = FuzzyString::AppendString(this->m_cptrStrArr, a_FuzzyStringInput.m_cptrStrArr);
-		AllocateAndAssignStr(l_cptrConcat);
-
-		delete l_cptrConcat;
-		l_cptrConcat = nullptr;
-	}
-
 	////Concatenates FuzzyString += a_cptrInput
 	void FuzzyString::operator+=(const char* a_cptrInput)
 	{
@@ -189,14 +173,16 @@ namespace FuzzyLib
 		l_cptrConcat = nullptr;
 	}
 
+	////Concatenates FuzzyString1 += FuzzyString2
+	void FuzzyString::operator+=(const FuzzyString& a_FuzzyStringInput)
+	{
+		*this += a_FuzzyStringInput.m_cptrStrArr;
+	}
+
 	////Concatenates FuzzyString += a_strInput
 	void FuzzyString:: operator+=(const std::string& a_strInput)
 	{
-		char* l_cptrConcat = FuzzyString::AppendString(this->m_cptrStrArr, a_strInput.c_str());
-		AllocateAndAssignStr(l_cptrConcat);
-
-		delete[] l_cptrConcat;
-		l_cptrConcat = nullptr;
+		*this += a_strInput.c_str();
 	}
 
 	////Concatenates a_cptrInput += FuzzyString 
@@ -214,57 +200,31 @@ namespace FuzzyLib
 	////Concatenates FuzzyString + a_cptrInput
 	FuzzyString operator+(const FuzzyString& a_FuzzyString, const char a_cptrInput[])
 	{
-		char* l_charConcat = FuzzyString::AppendString(a_FuzzyString.m_cptrStrArr, a_cptrInput);
-		FuzzyString l_FuzzyStr(l_charConcat);
-		delete[] l_charConcat;
-		l_charConcat = nullptr;
-
-		return l_FuzzyStr;
+		return FuzzyString::Concatenate(a_FuzzyString.m_cptrStrArr, a_cptrInput);
 	}
 
 	////Concatenates FuzzyString + a_strInput
 	FuzzyString operator+(const FuzzyString& a_FuzzyString, const std::string& a_strInput)
 	{
-		char* l_charConcat = FuzzyString::AppendString(a_FuzzyString.m_cptrStrArr, a_strInput.c_str());
-		FuzzyString l_FuzzyStr(l_charConcat);
-		delete[] l_charConcat;
-		l_charConcat = nullptr;
-
-		return l_FuzzyStr;
+		return FuzzyString::Concatenate(a_FuzzyString.m_cptrStrArr, a_strInput.c_str());
 	}
 
 	////Concatenates a_FuzzyString1.m_cptrStrArr + a_FuzzyString2 to FuzzyString
 	FuzzyString operator+(const FuzzyString& a_FuzzyString1, const FuzzyString& a_FuzzyString2)
 	{
-		char* l_charConcat = FuzzyString::AppendString(a_FuzzyString1.m_cptrStrArr, a_FuzzyString2.m_cptrStrArr);
-		FuzzyString l_FuzzyStr(l_charConcat);
-		delete[] l_charConcat;
-		l_charConcat = nullptr;
-
-		return l_FuzzyStr;
-		;
+		return FuzzyString::Concatenate(a_FuzzyString1.m_cptrStrArr, a_FuzzyString2.m_cptrStrArr);
 	}
 
 	////Concatenates a_cptrInput + FuzzyString
 	FuzzyString operator+(const char a_cptrInput[], const FuzzyString& a_FuzzyString)
 	{
-		char* l_charConcat = FuzzyString::AppendString(a_FuzzyString.m_cptrStrArr, a_cptrInput);
-		FuzzyString l_FuzzyStr(l_charConcat);
-		delete[] l_charConcat;
-		l_charConcat = nullptr;
-
-		return l_FuzzyStr;
+		return FuzzyString::Concatenate(a_cptrInput, a_FuzzyString.m_cptrStrArr);
 	}
 
 	////Concatenates a_strInput + FuzzyString
 	FuzzyString operator+(const std::string& a_strInput, const FuzzyString& a_FuzzyString)
 	{
-		char* l_charConcat = FuzzyString::AppendString(a_FuzzyString.m_cptrStrArr, a_strInput.c_str());
-		FuzzyString l_FuzzyStr(l_charConcat);
-		delete[] l_charConcat;
-		l_charConcat = nullptr;
-
-		return l_FuzzyStr;
+		return FuzzyString::Concatenate(a_strInput.c_str(), a_FuzzyString.m_cptrStrArr);
 	}
 
 #pragma endregion Overriding

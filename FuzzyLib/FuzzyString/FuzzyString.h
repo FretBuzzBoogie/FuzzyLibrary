@@ -12,7 +12,7 @@ namespace FuzzyLib
 		private:
 			int m_iCapacity = 1;
 			int m_iSize = 1;
-			char* m_cptrStrArr;
+			char* m_cptrStrArr = nullptr;
 			static char* const NULL_TERMINATOR;
 
 		///PUBLIC VARIABLES
@@ -21,6 +21,8 @@ namespace FuzzyLib
 		///PRIVATE SOURCE
 		private:
 			void AllocateAndAssignStr(const char a_cptrInput[]);
+
+			static FuzzyString Concatenate(const char* a_cptrInput1, const char* a_cptrInput2);
 			static int GetSizeOfPointedData(const char a_cptr[]);
 			static char* AppendString(const char* a_cptr1, const char* a_cptr2);
 
