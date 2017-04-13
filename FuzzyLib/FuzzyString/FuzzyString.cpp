@@ -6,6 +6,7 @@ namespace FuzzyLib
 {
 	//////////PRIVATE VARIABLES//////////
 	char* const FuzzyString::NULL_TERMINATOR = "\0";
+	const int FuzzyString::MAX_CHAR_EXTRACT = 32767;
 
 	//////////PUBLIC VARIABLES//////////
 
@@ -143,6 +144,18 @@ namespace FuzzyLib
 	{
 		out << a_FuzzyStr.m_cptrStrArr;
 		return out;
+	}
+
+	////Overrides cin >> a_FuzzyStr
+	std::istream& operator >> (std::istream& in, FuzzyString& a_FuzzyStr)
+	{
+		char* l_cptrInput = new char[FuzzyString::MAX_CHAR_EXTRACT];
+		std::cin.getline(l_cptrInput, FuzzyString::MAX_CHAR_EXTRACT);
+
+		a_FuzzyStr.AllocateAndAssignStr(l_cptrInput);
+		delete[] l_cptrInput;
+		l_cptrInput = nullptr;
+		return in;
 	}
 
 	////Sets FuzzyString1 = FuzzyString2

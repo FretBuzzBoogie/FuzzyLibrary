@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 #include <memory>
+#include <limits>
 
 namespace FuzzyLib
 {
@@ -14,6 +15,7 @@ namespace FuzzyLib
 			int m_iSize = 1;
 			char* m_cptrStrArr = nullptr;
 			static char* const NULL_TERMINATOR;
+			static const int MAX_CHAR_EXTRACT;
 
 		///PUBLIC VARIABLES
 		public:
@@ -62,7 +64,8 @@ namespace FuzzyLib
 			friend void operator+=(std::string &a_strInput, const FuzzyString& a_FuzzyString);
 
 			friend std::ostream& operator<<(std::ostream& out, const FuzzyString& a_FuzzyStr);
-			
+			friend std::istream& operator>>(std::istream& in,  FuzzyString& a_FuzzyStr);
+
 			static char* GetEmpty();
 			static char* GetNullTerminator();
 	};
