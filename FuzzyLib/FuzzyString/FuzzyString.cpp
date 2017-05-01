@@ -103,6 +103,7 @@ namespace FuzzyLib
 	////Destructor to Destroy the FuzzyString Array
 	FuzzyString::~FuzzyString()
 	{
+		std::cout << "Destroying FuzzyString\n";
 		delete [] m_cptrStrArr;
 		m_cptrStrArr = nullptr;
 	}
@@ -151,6 +152,14 @@ namespace FuzzyLib
 	{
 		char* l_cptrInput = new char[FuzzyString::MAX_CHAR_EXTRACT];
 		std::cin.getline(l_cptrInput, FuzzyString::MAX_CHAR_EXTRACT);
+
+		if (std::cin.fail())
+		{
+			std::cin.clear();
+			std::cin.ignore(FuzzyString::MAX_CHAR_EXTRACT, '\n');
+			std::cout << "Fail bit is reset\n";
+			return in;
+		}
 
 		a_FuzzyStr.AllocateAndAssignStr(l_cptrInput);
 		delete[] l_cptrInput;
@@ -277,7 +286,7 @@ namespace FuzzyLib
 #pragma endregion Getters
 
 	////Logs the internal char ptr, the size and capacity
-	void FuzzyString::DebugLog()
+	void FuzzyString:: DebugLog()
 	{
 		std::cout << "FuzzyString ::'" << *this << "', Size::" <<
 			m_iSize << ", Capacity::" << m_iCapacity << "\n";

@@ -3,11 +3,11 @@
 #include <iostream>
 #include <string>
 #include <memory>
-#include <limits>
+#include "..\Base\FuzzyBase.h"
 
 namespace FuzzyLib
 {
-	class FuzzyString
+	class FuzzyString : public IFuzzyBase
 	{
 		///PRIVATE VARIABLES
 		private:
@@ -43,7 +43,7 @@ namespace FuzzyLib
 			bool IsEqual(const FuzzyString &a_FuzzyString) const;
 			bool IsEqual(const char* a_cptrInput) const;
 			bool IsEqual(const std::string& a_strInput) const;
-			void DebugLog();
+			virtual void DebugLog() override;
 
 			void operator=(const char a_cptrInput[]);
 			void operator=(const std::string& a_strInput);

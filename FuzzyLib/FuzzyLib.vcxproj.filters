@@ -26,5 +26,8 @@
     <ClInclude Include="FuzzyString\FuzzyString.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Base\FuzzyBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
