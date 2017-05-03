@@ -3,7 +3,7 @@
 #include <iostream>
 #include <string>
 #include <memory>
-#include "..\Base\FuzzyBase.h"
+#include "..\Base\IFuzzyBase.h"
 
 namespace FuzzyLib
 {

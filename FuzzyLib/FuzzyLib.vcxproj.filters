@@ -15,10 +15,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="FuzzyString\FuzzyString.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="FuzzyString\FuzzyString.cpp">
+    <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -26,7 +26,10 @@
     <ClInclude Include="FuzzyString\FuzzyString.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Base\FuzzyBase.h">
+    <ClInclude Include="FuzzyList\FuzzyList.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Base\IFuzzyBase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
