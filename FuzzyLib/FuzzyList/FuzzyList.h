@@ -98,6 +98,8 @@ namespace FuzzyLib
 				}
 			}
 
+		///PROTECTED SOURCE
+
 			// Get the variable stored at index by reference.
 			T& GetAtIndex(const int& a_iIndex) throw(std::out_of_range)
 			{
@@ -112,6 +114,7 @@ namespace FuzzyLib
 				return *(m_List[a_iIndex]);
 			}
 
+		protected:
 			//Checks if index is out of the internal array range
 			void CheckForOutOfRange(const int &a_iIndex) throw(std::out_of_range)
 			{
@@ -249,6 +252,8 @@ namespace FuzzyLib
 
 	#pragma endregion operator overloading
 
+	#pragma region debug
+
 			//Logs the contents of the List.
 			virtual void DebugLog() override
 			{
@@ -263,6 +268,8 @@ namespace FuzzyLib
 					}
 				}
 			}
+
+	#pragma endregion debug
 	};
 
 }
