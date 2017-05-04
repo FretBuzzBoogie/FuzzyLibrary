@@ -28,22 +28,21 @@ int main(int argc, char** argv)
 	std::string* ptrMrDodo = &MrDodo;
 
 
-	FuzzyList<std::string> strListEmptyTest;
-	FuzzyList<std::string> strlist = { WelcomeHome,Hello,Gregard,MrDodo, Schilling };
+	FuzzyList<std::string*> strListEmptyTest;
+	FuzzyList<std::string*> strlist = { ptrWelcomeHome,ptrHello,ptrGregard,ptrMrDodo, ptrSchilling };
 
-	strListEmptyTest.Add(Schilling);
-	strListEmptyTest.AddRange(strlist);
-	strlist.DebugLog();
-
-	strlist.Remove(666);
-	strlist[-1];
-
-	std::cout << "Retrieving data at index 2 ::" << strlist[1] << "\n";
-
-	strlist.Remove(3);
-	strlist.Remove(3);
-	strlist.DebugLog();
+	strListEmptyTest = strlist;
 	
+	strlist.DebugLog();
+	strListEmptyTest.DebugLog();
+
+	*ptrHello = MyFriend;
+
+	strlist.DebugLog();
+	strListEmptyTest.DebugLog();
+
+
+
 	system("pause");
 	return 0;
 }

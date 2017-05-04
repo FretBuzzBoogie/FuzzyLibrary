@@ -149,6 +149,12 @@ namespace FuzzyLib
 				AllocateMemory(a_iInitCapacity);
 			}
 
+			//Copy constructor that assigns via deep copying.
+			FuzzyList(const FuzzyList& a_FuzzyList)
+			{
+				*this = a_FuzzyList;
+			}
+
 			//Destructor.
 			~FuzzyList()
 			{
@@ -250,6 +256,18 @@ namespace FuzzyLib
 				}
 			}
 
+			//Deep Copying of a FuzzyList
+			void operator=(FuzzyList& a_FuzzList)
+			{
+				AllocateMemory(a_FuzzList.m_iCapacity);
+				m_iCount = a_FuzzList.m_iCount;
+
+				for (int l_iListIndex = 0; l_iListIndex < m_iCount; l_iListIndex++)
+				{
+					*m_List[l_iListIndex] = *a_FuzzList.m_List[l_iListIndex];
+				}
+			}
+
 	#pragma endregion operator overloading
 
 	#pragma region debug
@@ -264,7 +282,7 @@ namespace FuzzyLib
 					l_currObjPtr = m_List[l_iListIndex];
 					if (l_currObjPtr != nullptr)
 					{
-						std::cout << "Index Value::" << *l_currObjPtr << "\n";
+						std::cout << "Index Value::" << **l_currObjPtr << "\n";
 					}
 				}
 			}

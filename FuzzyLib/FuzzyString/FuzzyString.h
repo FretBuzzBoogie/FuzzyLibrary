@@ -48,17 +48,21 @@ namespace FuzzyLib
 			void operator=(const char a_cptrInput[]);
 			void operator=(const std::string& a_strInput);
 			void operator=(const FuzzyString& a_FuzzyStringInput);
+			void operator=(const int& a_Int);
 
 			friend FuzzyString operator+(const FuzzyString& a_FuzzyString, const char a_cptrInput[]);
 			friend FuzzyString operator+(const FuzzyString& a_FuzzyString, const std::string& a_strInput);
 			friend FuzzyString operator+(const FuzzyString& a_FuzzyString, const FuzzyString& a_FuzzyStringInput);
+			friend FuzzyString operator+(const FuzzyString& a_FuzzyString, const int& a_Int);
 
 			friend FuzzyString operator+(const char a_cptrInput[], const FuzzyString& a_FuzzyString);
 			friend FuzzyString operator+(const std::string& a_strInput, const FuzzyString& a_FuzzyString);
+			friend FuzzyString operator+(const int& a_Int, const FuzzyString& a_FuzzyString);
 
 			void operator+=(const FuzzyString& a_FuzzyStringInput);
 			void operator+=(const char* a_cptrInput);
 			void operator+=(const std::string& a_strInput);
+			void operator+=(const int& a_Int);
 
 			friend void operator+=(char* &a_cptrInput, const FuzzyString& a_FuzzyString);
 			friend void operator+=(std::string &a_strInput, const FuzzyString& a_FuzzyString);
