@@ -21,12 +21,26 @@ namespace FuzzyLib
 
 		///PRIVATE SOURCE
 		private:
+			//Called on creating a list in the constructor.
+			void InitList(const std::initializer_list<T>& a_initList)
+			{
+				int l_initListSize = a_initList.size();
+				AllocateMemory(l_initListSize);
+
+				int l_iInializerIndex = 0;
+				for (T l_Obj : a_initList)
+				{
+					*m_List[l_iInializerIndex] = l_Obj;
+					l_iInializerIndex++;
+				}
+				m_iCount = l_initListSize;
+			}
 
 			//Conditionally allocates memory to the list
 			//If capacity to allocate is less than double current capacity,
 			////sets capacity as double the current capacity
-			//Else sets the capacity to the arguement 
-			void AllocateMemory(const int& a_iCapacity, const bool a_bIsListEmpty = false)
+			//Else sets the capacity to the arguement.
+			void AllocateMemory(const int& a_iCapacity)
 			{
 				if (a_iCapacity <= m_iCapacity)
 				{
@@ -36,32 +50,18 @@ namespace FuzzyLib
 
 				int l_iDoubleCapacity = 2 * m_iCapacity;
 				int l_iMemoryToAllocate = a_iCapacity <= l_iDoubleCapacity ? l_iDoubleCapacity : a_iCapacity;
-				ResizeList(l_iMemoryToAllocate, a_bIsListEmpty);
+				ResizeList(l_iMemoryToAllocate);
 			}
 
-			//Called on creating a list in the constructor
-			void InitList(const std::initializer_list<T> &a_initList)
-			{
-				int l_initListSize = a_initList.size();
-				AllocateMemory(l_initListSize, true);
-
-				int l_iInializerIndex = 0;
-				for (T l_Obj : a_initList)
-				{
-					m_List[l_iInializerIndex] = new T(l_Obj);
-					l_iInializerIndex++;
-				}
-				m_iCount = l_initListSize;
-			}
 
 			//Resizes the capacity of the list
-			//If list is empty then do not copy contents of list before resize
-			void ResizeList(const int& a_iMemoryToAllocate, const bool a_bIsListEmpty = false)
+			//If list is empty then do not copy contents of list before resize.
+			void ResizeList(const int& a_iMemoryToAllocate)
 			{
 				T** tempList = nullptr;
-				bool l_bIsListInitialCreated = m_List == nullptr;
-	
-				if (!a_bIsListEmpty)
+				bool l_bIsListEmpty = m_List == nullptr;
+
+				if (!l_bIsListEmpty)
 				{
 					tempList = new T*[m_iCount];
 					for (int l_iTempListIndex = 0; l_iTempListIndex < m_iCount; l_iTempListIndex++)
@@ -70,15 +70,18 @@ namespace FuzzyLib
 					}
 				}
 
-				if (m_List != nullptr)
-				{
-					delete[] m_List;
-				}
-
+				delete[] m_List;
 				m_List = new T*[a_iMemoryToAllocate];
 				m_iCapacity = a_iMemoryToAllocate;
 
-				if (!a_bIsListEmpty)
+				if (l_bIsListEmpty)
+				{
+					for (int l_iTempListIndex = 0; l_iTempListIndex < m_iCapacity; l_iTempListIndex++)
+					{
+						m_List[l_iTempListIndex] = new T();
+					}
+				}
+				else
 				{
 					for (int l_iTempListIndex = 0; l_iTempListIndex < m_iCount; l_iTempListIndex++)
 					{
@@ -94,58 +97,60 @@ namespace FuzzyLib
 				}
 			}
 
+			// Get the variable stored at index by reference.
+			T& GetAtIndex(const int& a_iIndex) const
+			{
+				if (a_iIndex >= m_iCount || a_iIndex < 0)
+				{
+					std::cout << "FuzzyList<T>::GetAtIndex:: Index " << a_iIndex << " is out of range\n";
+				}
+				return *(m_List[a_iIndex]);
+			}
+
 		///PUBLIC SOURCE
 		public:
 
 	#pragma region Constructor/Destructor
-
-			//Default Constructor
-			FuzzyList() : FuzzyList(EMPTY_LIST_SIZE)
-			{
-			}
 			
-			//Constructor to initialize a list
+			//Constructor to initialize a list.
 			FuzzyList(const std::initializer_list<T>& a_initList)
 			{
 				InitList(a_initList);
 			}
 
-			//Constructor to initialize with input capacity
-			FuzzyList(const int& a_iInitCapacity)
+			//Constructor to initialize with input capacity.
+			FuzzyList(const int& a_iInitCapacity = DEFAULT_CAPACITY)
 			{
-				AllocateMemory(a_iInitCapacity, true);
+				AllocateMemory(a_iInitCapacity);
 			}
 
-			//Destructor
+			//Destructor.
 			~FuzzyList()
 			{
 				for (int l_iListIndex = 0; l_iListIndex < m_iCapacity; l_iListIndex++)
 				{
-					delete m_List[l_iListIndex];
-					m_List[l_iListIndex] = nullptr;
+					T*& refListIndex = m_List[l_iListIndex];
+					delete refListIndex;
+					refListIndex = nullptr;
 				}
+
 				delete[] m_List;
 				m_List = nullptr;
 			}
 
 	#pragma endregion Constructor/Destructor
 
-			//Adds the object at the end of the List
+	#pragma region List Manipulation Functions
+
+			//Adds the object at the end of the List.
 			void Add(T& a_Obj)
 			{
 				AllocateMemory(m_iCount + 1);
-				if (m_List[m_iCount] == nullptr)
-				{
-					m_List[m_iCount] = new T(a_Obj);
-				}
-				else
-				{
-					*m_List[m_iCount] = a_Obj;
-				}
+				*m_List[m_iCount] = a_Obj;
 				m_iCount++;
 			}
 
-			//Adds a range of Objects at the end of the list
+			//Adds a range of Objects at the end of the list.
 			void AddRange(FuzzyList<T>& a_List)
 			{
 				int l_iCountBeforeAdd = m_iCount;
@@ -156,52 +161,48 @@ namespace FuzzyLib
 
 				for (int l_iCountIndex = 0; (l_iCountIndex + l_iCountBeforeAdd) < m_iCount; l_iCountIndex++)
 				{
-					if (m_List[l_iCountIndex + l_iCountBeforeAdd] == nullptr)
-					{
-						m_List[l_iCountIndex + l_iCountBeforeAdd] = new T(a_List[l_iCountIndex]);
-					}
-					else
-					{
-						m_List[l_iCountIndex + l_iCountBeforeAdd] = &a_List[l_iCountIndex];
-					}
+					*m_List[l_iCountIndex + l_iCountBeforeAdd] = a_List[l_iCountIndex];
 				}
 			}
 
-			//Clears the contents of the list
+			//Clears the contents of the list.
 			void Clear()
 			{
 				m_iCount = EMPTY_LIST_SIZE;
 			}
 
+			//Removes the object in the list at index.
+			void Remove(const int& a_iRemoveObjAtIndex)
+			{
+				int l_iCountAfterRemoval = m_iCount - 1;
+				for (int l_iListIndex = a_iRemoveObjAtIndex; l_iListIndex < l_iCountAfterRemoval; l_iListIndex++)
+				{
+					*m_List[l_iListIndex] = *m_List[l_iListIndex + 1];
+				}
+				m_iCount = l_iCountAfterRemoval;
+			}
+
+	#pragma endregion List Manipulation Functions
+
 	#pragma region Getters
 		
-			//Gets the count of the the elements of type T in the internal array 
+			//Gets the count of the the elements of type T in the internal array.
 			const int& GetCount() const
 			{
 				return m_iCount;
 			}
-
-			//Gets the capacity of the internal array with elements of type T
+			 
+			//Gets the capacity of the internal array with elements of type T.
 			const int& GetCapacity() const
 			{
 				return m_iCapacity;
-			}
-
-			// Get the variable stored at index by reference
-			T& GetAtIndex(const int& a_iIndex) const
-			{
-				if (a_iIndex >= m_iCount || a_iIndex < 0)
-				{
-					std::cout << "FuzzyList<T>::GetAtIndex:: Index " << a_iIndex << " is out of range\n";
-				}
-				return *(m_List[a_iIndex]);
 			}
 
 	#pragma endregion Getters
 
 	#pragma region operator overloading
 
-			//[] operator to return object at given index of list
+			//[] operator to return object at given index of list.
 			T& operator[](const int& a_iListIndex)
 			{
 				return GetAtIndex(a_iListIndex);
@@ -209,7 +210,7 @@ namespace FuzzyLib
 
 	#pragma endregion operator overloading
 
-			//Logs the contents of the List
+			//Logs the contents of the List.
 			virtual void DebugLog() override
 			{
 				std::cout << "\nCount : " << m_iCount << "..... Size :: " << m_iCapacity << "\n";

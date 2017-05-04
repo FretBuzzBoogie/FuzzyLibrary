@@ -3,7 +3,7 @@
 #include "FuzzyString\FuzzyString.h"
 #include "FuzzyList\FuzzyList.h"
 
-int main()
+int main(int argc, char** argv)
 {
 	using namespace FuzzyLib;
 	FuzzyString* fuzzStr = new FuzzyString("doIt123");
@@ -19,19 +19,33 @@ int main()
 	std::string* ptrMyFriend = &MyFriend;
 
 	std::string Gregard = "Gregard";
-	std::string* ptrGregard = &MyFriend;
+	std::string* ptrGregard = &Gregard;
 
 	std::string Schilling = "Schilling";
 	std::string* ptrSchilling = &Schilling;
 
-	FuzzyList<std::string*> strlist{ ptrWelcomeHome,ptrMyFriend };
+	std::string MrDodo = "MrDodo";
+	std::string* ptrMrDodo = &MrDodo;
+
+
+	FuzzyList<std::string> strListEmptyTest;
+	FuzzyList<std::string> strlist = { WelcomeHome,Hello,Gregard,MrDodo, Schilling };
+
+	strlist.DebugLog();
+	strlist.Remove(2);
+	strlist.DebugLog();
+	/*
+	strListEmptyTest.Add(ptrMrDodo);
+	strListEmptyTest.AddRange(strlist);
+	strListEmptyTest[2] = ptrSchilling;
+
+	strListEmptyTest.DebugLog();
 	strlist.DebugLog();
 	
 	strlist.Add(ptrGregard);
 	strlist.Add(ptrSchilling);
 	strlist.DebugLog();
 
-	
 	std::string doHello = "doHello";
 	std::string* ptrdoHello = &doHello;
 
@@ -63,8 +77,7 @@ int main()
 	strlist.DebugLog();
 
 	*strlist[3] = "George";
-	strlist.DebugLog();
-	
+	strlist.DebugLog();*/
 
 	system("pause");
 	return 0;
