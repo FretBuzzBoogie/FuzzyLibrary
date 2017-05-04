@@ -4,6 +4,7 @@
 #include "..\Base\IFuzzyBase.h"
 #include <vector>
 #include <array>
+#include <cassert>
 
 namespace FuzzyLib
 {
@@ -98,13 +99,34 @@ namespace FuzzyLib
 			}
 
 			// Get the variable stored at index by reference.
-			T& GetAtIndex(const int& a_iIndex) const
+			T& GetAtIndex(const int& a_iIndex) throw(std::out_of_range)
 			{
-				if (a_iIndex >= m_iCount || a_iIndex < 0)
+				try
 				{
-					std::cout << "FuzzyList<T>::GetAtIndex:: Index " << a_iIndex << " is out of range\n";
+					CheckForOutOfRange(a_iIndex);
+				}
+				catch (std::out_of_range& a_Exception)
+				{
+					throw;
 				}
 				return *(m_List[a_iIndex]);
+			}
+
+			//Checks if index is out of the internal array range
+			void CheckForOutOfRange(const int &a_iIndex) throw(std::out_of_range)
+			{
+				try
+				{
+					if (a_iIndex >= m_iCount || a_iIndex < 0)
+					{
+						char* l_Error = "Arguement is out of range of internal FuzzyList.\n";
+						throw std::out_of_range(l_Error);
+					}
+				}
+				catch (std::out_of_range& a_Exception)
+				{
+					throw;
+				}
 			}
 
 		///PUBLIC SOURCE
@@ -172,8 +194,18 @@ namespace FuzzyLib
 			}
 
 			//Removes the object in the list at index.
-			void Remove(const int& a_iRemoveObjAtIndex)
+			void Remove(const int& a_iRemoveObjAtIndex) throw(std::exception)
 			{
+				try
+				{
+					CheckForOutOfRange(a_iRemoveObjAtIndex);
+				}
+				catch (std::exception& a_Exception)
+				{
+					std::cerr <<"FuzzyList::Remove:: "<< a_Exception.what();
+					return;
+				}
+
 				int l_iCountAfterRemoval = m_iCount - 1;
 				for (int l_iListIndex = a_iRemoveObjAtIndex; l_iListIndex < l_iCountAfterRemoval; l_iListIndex++)
 				{
@@ -205,7 +237,14 @@ namespace FuzzyLib
 			//[] operator to return object at given index of list.
 			T& operator[](const int& a_iListIndex)
 			{
-				return GetAtIndex(a_iListIndex);
+				try
+				{
+					return GetAtIndex(a_iListIndex);
+				}
+				catch (std::out_of_range& a_Exception)
+				{
+					std::cerr << "FuzzyList::GetAtIndex:: "<<a_Exception.what();
+				}
 			}
 
 	#pragma endregion operator overloading
