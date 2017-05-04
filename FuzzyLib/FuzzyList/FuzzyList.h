@@ -186,7 +186,7 @@ namespace FuzzyLib
 
 				for (int l_iCountIndex = 0; (l_iCountIndex + l_iCountBeforeAdd) < m_iCount; l_iCountIndex++)
 				{
-					*m_List[l_iCountIndex + l_iCountBeforeAdd] = a_List[l_iCountIndex];
+					*m_List[l_iCountIndex + l_iCountBeforeAdd] = a_List.GetAtIndex(l_iCountIndex);
 				}
 			}
 
