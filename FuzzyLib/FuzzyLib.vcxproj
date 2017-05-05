@@ -117,7 +117,8 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Base\IFuzzyBase.h" />
+    <ClInclude Include="Utils\FuzzyUtility.h" />
+    <ClInclude Include="Utils\IFuzzyDebug.h" />
     <ClInclude Include="FuzzyList\FuzzyList.h" />
     <ClInclude Include="FuzzyString\FuzzyString.h" />
   </ItemGroup>

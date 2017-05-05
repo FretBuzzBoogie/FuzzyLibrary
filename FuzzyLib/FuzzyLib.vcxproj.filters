@@ -29,7 +29,10 @@
     <ClInclude Include="FuzzyList\FuzzyList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Base\IFuzzyBase.h">
+    <ClInclude Include="Utils\IFuzzyDebug.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\FuzzyUtility.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

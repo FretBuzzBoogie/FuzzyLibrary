@@ -1,16 +1,13 @@
 #pragma once
 #include <iostream>
 #include <initializer_list>
-#include "..\Base\IFuzzyBase.h"
-#include <vector>
-#include <array>
+#include "..\Utils\IFuzzyDebug.h"
 #include <cassert>
 
 namespace FuzzyLib
 {
-		
 	template <typename T>
-	class FuzzyList : IFuzzyBase
+	class FuzzyList : IFuzzyDebug
 	{
 		///PRIVATE VARIABLES
 		private:
@@ -98,7 +95,6 @@ namespace FuzzyLib
 				}
 			}
 
-		///PROTECTED SOURCE
 
 			// Get the variable stored at index by reference.
 			T& GetAtIndex(const int& a_iIndex) throw(std::out_of_range)
@@ -114,6 +110,7 @@ namespace FuzzyLib
 				return *(m_List[a_iIndex]);
 			}
 
+		///PROTECTED SOURCE
 		protected:
 			//Checks if index is out of the internal array range
 			void CheckForOutOfRange(const int &a_iIndex) throw(std::out_of_range)
@@ -136,7 +133,7 @@ namespace FuzzyLib
 		public:
 
 	#pragma region Constructor/Destructor
-			
+	
 			//Constructor to initialize a list.
 			FuzzyList(const std::initializer_list<T>& a_initList)
 			{
@@ -153,6 +150,17 @@ namespace FuzzyLib
 			FuzzyList(const FuzzyList& a_FuzzyList)
 			{
 				*this = a_FuzzyList;
+			}
+
+			//Constructor that assigns an array.
+			FuzzyList(const T a_Array[], const int& a_iArrayLength)
+			{
+				AllocateMemory(a_iArrayLength);
+				m_iCount = a_iArrayLength;
+				for (int l_iArrayIndex = 0; l_iArrayIndex < m_iCount; l_iArrayIndex++)
+				{
+					*m_List[l_iArrayIndex] = a_Array[l_iArrayIndex];
+				}
 			}
 
 			//Destructor.
@@ -282,12 +290,11 @@ namespace FuzzyLib
 					l_currObjPtr = m_List[l_iListIndex];
 					if (l_currObjPtr != nullptr)
 					{
-						std::cout << "Index Value::" << **l_currObjPtr << "\n";
+						std::cout << "Index Value::" << *l_currObjPtr << "\n";
 					}
 				}
 			}
 
 	#pragma endregion debug
 	};
-
 }

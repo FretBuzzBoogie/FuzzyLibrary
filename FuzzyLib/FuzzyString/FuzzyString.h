@@ -3,19 +3,20 @@
 #include <iostream>
 #include <string>
 #include <memory>
-#include "..\Base\IFuzzyBase.h"
+#include "..\Utils\IFuzzyDebug.h"
+#include "..\Utils\FuzzyUtility.h"
 
 namespace FuzzyLib
 {
-	class FuzzyString : public IFuzzyBase
+	class FuzzyString : public IFuzzyDebug
 	{
 		///PRIVATE VARIABLES
 		private:
 			int m_iCapacity = 1;
 			int m_iSize = 1;
-			char* m_cptrStrArr = nullptr;
 			static char* const NULL_TERMINATOR;
 			static const int MAX_CHAR_EXTRACT;
+			char* m_cptrStrArr = NULL_TERMINATOR;
 
 		///PUBLIC VARIABLES
 		public:
@@ -30,9 +31,11 @@ namespace FuzzyLib
 
 		///PUBLIC SOURCE
 		public:
+			FuzzyString();
 			FuzzyString(FuzzyString &a_FuzzyString);
 			FuzzyString(const char a_cptrInput[]);
 			FuzzyString(const std::string &a_strInput);
+			FuzzyString(const int &a_intInput);
 
 			~FuzzyString();
 
@@ -70,7 +73,7 @@ namespace FuzzyLib
 			friend std::ostream& operator<<(std::ostream& out, const FuzzyString& a_FuzzyStr);
 			friend std::istream& operator>>(std::istream& in,  FuzzyString& a_FuzzyStr);
 
-			static char* GetEmpty();
-			static char* GetNullTerminator();
+			static char* const GetEmpty();
+			static char* const GetNullTerminator();
 	};
 }
