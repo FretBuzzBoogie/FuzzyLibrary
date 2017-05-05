@@ -24,7 +24,7 @@ namespace FuzzyLib
 		int l_iSizeToAssign = GetSizeOfPointedData(a_cptrInput) + 1;
 		if (l_iSizeToAssign > m_iCapacity)
 		{
-			if (!(m_cptrStrArr == NULL_TERMINATOR))
+			if (m_cptrStrArr != NULL_TERMINATOR)
 			{
 				delete m_cptrStrArr;
 				m_cptrStrArr = nullptr;
@@ -121,7 +121,7 @@ namespace FuzzyLib
 	{
 		std::cout << "Destroying FuzzyString\n";
 
-		if (!(m_cptrStrArr == NULL_TERMINATOR))
+		if (m_cptrStrArr != NULL_TERMINATOR)
 		{
 			delete[] m_cptrStrArr;
 			m_cptrStrArr = nullptr;

@@ -9,7 +9,7 @@ int main(int argc, char** argv)
 	
 	FuzzyString l_str;
 	FuzzyString l_str1("HailTheReaper::");
-
+	l_str.DebugLog();
 	l_str += l_str1 + 666;
 	l_str.DebugLog();
 
