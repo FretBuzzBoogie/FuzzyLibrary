@@ -58,11 +58,12 @@ namespace FuzzyLib
 			{
 				T** tempList = nullptr;
 				bool l_bIsListEmpty = m_List == nullptr;
+				int l_iCapacityBeforeResize = m_iCapacity;
 
 				if (!l_bIsListEmpty)
 				{
-					tempList = new T*[m_iCount];
-					for (int l_iTempListIndex = 0; l_iTempListIndex < m_iCount; l_iTempListIndex++)
+					tempList = new T*[l_iCapacityBeforeResize];
+					for (int l_iTempListIndex = 0; l_iTempListIndex < l_iCapacityBeforeResize; l_iTempListIndex++)
 					{
 						tempList[l_iTempListIndex] = m_List[l_iTempListIndex];
 					}
@@ -81,11 +82,11 @@ namespace FuzzyLib
 				}
 				else
 				{
-					for (int l_iTempListIndex = 0; l_iTempListIndex < m_iCount; l_iTempListIndex++)
+					for (int l_iTempListIndex = 0; l_iTempListIndex < l_iCapacityBeforeResize; l_iTempListIndex++)
 					{
 						m_List[l_iTempListIndex] = tempList[l_iTempListIndex];
 					}
-					for (int l_iListIndex = m_iCount; l_iListIndex < m_iCapacity; l_iListIndex++)
+					for (int l_iListIndex = l_iCapacityBeforeResize; l_iListIndex < m_iCapacity; l_iListIndex++)
 					{
 						m_List[l_iListIndex] = new T();
 					}
