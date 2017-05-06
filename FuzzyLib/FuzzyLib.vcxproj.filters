@@ -15,24 +15,33 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="FuzzyString\FuzzyString.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="FuzzyEvent\Manager\EventManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="FuzzyString\FuzzyString.h">
+    <ClInclude Include="FuzzyList\FuzzyList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="FuzzyList\FuzzyList.h">
+    <ClInclude Include="FuzzyString\FuzzyString.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Utils\IFuzzyDebug.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Utils\FuzzyUtility.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FuzzyEvent\Manager\EventManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FuzzyEvent\FuzzyEvent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

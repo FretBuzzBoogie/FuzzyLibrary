@@ -7,7 +7,7 @@
 namespace FuzzyLib
 {
 	template <typename T>
-	class FuzzyList : IFuzzyDebug
+	class FuzzyList : public IFuzzyDebug
 	{
 		///PRIVATE VARIABLES
 		private:
@@ -111,6 +111,35 @@ namespace FuzzyLib
 				return *(m_List[a_iIndex]);
 			}
 
+			//Deletes all allocated memory aquired by class.
+			void DeleteAllAllocated()
+			{
+				if (m_List == nullptr)
+				{
+					return;
+				}
+
+				for (int l_iListIndex = 0; l_iListIndex < m_iCapacity; l_iListIndex++)
+				{
+					T*& refListIndex = m_List[l_iListIndex];
+					delete refListIndex;
+					refListIndex = nullptr;
+				}
+				
+				delete m_List;
+				m_List = nullptr;
+			}
+
+			//Copies a FuzzyList to *this by value usimg move semantics by r-value reference
+			void CopyConstructorByValue(FuzzyList& a_FuzzyList)
+			{
+				DeleteAllAllocated();
+				m_iCapacity = a_FuzzyList.m_iCapacity;
+				m_iCount = a_FuzzyList.m_iCount;
+				m_List = a_FuzzyList.m_List;
+				a_FuzzyList.m_List = nullptr;
+			}
+
 		///PROTECTED SOURCE
 		protected:
 			//Checks if index is out of the internal array range
@@ -153,6 +182,12 @@ namespace FuzzyLib
 				*this = a_FuzzyList;
 			}
 
+			//Copy constructor that assigns via move sematics of an r-value by reference.
+			FuzzyList(FuzzyList&& a_FuzzyList)
+			{
+				CopyConstructorByValue(a_FuzzyList);
+			}
+
 			//Constructor that assigns an array.
 			FuzzyList(const T a_Array[], const int& a_iArrayLength)
 			{
@@ -167,15 +202,7 @@ namespace FuzzyLib
 			//Destructor.
 			~FuzzyList()
 			{
-				for (int l_iListIndex = 0; l_iListIndex < m_iCapacity; l_iListIndex++)
-				{
-					T*& refListIndex = m_List[l_iListIndex];
-					delete refListIndex;
-					refListIndex = nullptr;
-				}
-
-				delete[] m_List;
-				m_List = nullptr;
+				DeleteAllAllocated();
 			}
 
 	#pragma endregion Constructor/Destructor
@@ -266,8 +293,13 @@ namespace FuzzyLib
 			}
 
 			//Deep Copying of a FuzzyList
-			void operator=(FuzzyList& a_FuzzList)
+			void operator=(const FuzzyList& a_FuzzList)
 			{
+				if (this == &a_FuzzList)
+				{
+					return;
+				}
+
 				AllocateMemory(a_FuzzList.m_iCapacity);
 				m_iCount = a_FuzzList.m_iCount;
 
@@ -275,6 +307,12 @@ namespace FuzzyLib
 				{
 					*m_List[l_iListIndex] = *a_FuzzList.m_List[l_iListIndex];
 				}
+			}
+
+			//Move semantics of an r-value by reference of a FuzzyList 
+			void operator=(FuzzyList<T>&& a_FuzzyList)
+			{
+				CopyConstructorByValue(a_FuzzyList);
 			}
 
 	#pragma endregion operator overloading
