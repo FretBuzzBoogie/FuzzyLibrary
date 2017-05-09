@@ -24,6 +24,8 @@ namespace FuzzyLib
 		///PRIVATE SOURCE
 		private:
 			void AllocateAndAssignStr(const char a_cptrInput[]);
+			void DeleteAllocatedMemory();
+			void CopyConstructorByValue(FuzzyString& a_FuzzyList);
 
 			static FuzzyString Concatenate(const char* a_cptrInput1, const char* a_cptrInput2);
 			static int GetSizeOfPointedData(const char a_cptr[]);
@@ -32,7 +34,8 @@ namespace FuzzyLib
 		///PUBLIC SOURCE
 		public:
 			FuzzyString();
-			FuzzyString(FuzzyString &a_FuzzyString);
+			FuzzyString(const FuzzyString &a_FuzzyString);
+			FuzzyString(FuzzyString&& a_FuzzyString);
 			FuzzyString(const char a_cptrInput[]);
 			FuzzyString(const std::string &a_strInput);
 			FuzzyString(const int &a_intInput);
@@ -52,6 +55,7 @@ namespace FuzzyLib
 			void operator=(const std::string& a_strInput);
 			void operator=(const FuzzyString& a_FuzzyStringInput);
 			void operator=(const int& a_Int);
+			void operator=(FuzzyString&& a_FuzzyStringInput);
 
 			friend FuzzyString operator+(const FuzzyString& a_FuzzyString, const char a_cptrInput[]);
 			friend FuzzyString operator+(const FuzzyString& a_FuzzyString, const std::string& a_strInput);
