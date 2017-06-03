@@ -3,54 +3,58 @@
 #include "FuzzyString\FuzzyString.h"
 #include "FuzzyList\FuzzyList.h"
 
-	using namespace FuzzyLib;
-
-FuzzyList<std::string> GetNewFuzzyList()
-{
-	std::string Gamma1 = "Gamma1";
-
-	std::string Delta1 = "Delta1";
-
-	std::string Zeta = "Zeta";
-	FuzzyList<std::string> l_Fuzz = { Zeta, Delta1, Gamma1 };
-	return l_Fuzz;
-}
+using namespace FuzzyLib;
+using namespace std;
 
 int main(int argc, char** argv)
 {
-	
-	std::string Alpha = "Alpha";
-	std::string* ptrAlpha = &Alpha;
+	string first = "first";
+	string *pfirst = &first;
 
-	std::string Beta = "Beta";
-	std::string* ptrBeta = &Beta;
+	string second = "second";
+	string *psecond = &second;
 
-	std::string Gamma = "Gamma";
-	std::string* ptrGamma = &Gamma;
+	string third = "third";
+	string *pthird = &third;
 
-	std::string Delta = "Delta";
-	std::string* ptrDelta = &Delta;
+	string fourth = "fourth";
+	string *pfourth = &fourth;
 
-	std::string Alpha1 = "Alpha1";
-	std::string* ptrAlpha1 = &Alpha1;
+	string fifth = "fifth";
+	string *pfifth = &fifth;
 
-	std::string Beta1 = "Beta1";
-	std::string* ptrBeta1 = &Beta1;
+	string sixth = "sixth";
+	string *psixth = &sixth;
 
-	std::string Gamma1 = "Gamma1";
-	std::string* ptrGamma1 = &Gamma1;
+	string seventh = "seventh";
+	string *pseventh = &seventh;
 
-	std::string Delta1 = "Delta1";
-	std::string* ptrDelta1 = &Delta1;
+	string eighth = "eighth";
+	string *peighth = &eighth;
 
-	std::string Zeta = "Zeta";
-	std::string* ptrZeta = &Zeta;
+	string ninth = "ninth";
+	string *pninth = &ninth;
 
-	FuzzyList<std::string> l_list1 = { Alpha, Beta, Gamma, Delta };
-	
-	l_list1 = FuzzyList<std::string>(GetNewFuzzyList());
-	l_list1.DebugLog();
-	FuzzyList<std::string> l_list2(l_list1);
+	string tenth = "tenth";
+	string *ptenth = &tenth;
+
+	FuzzyList<string> l_fuzz = { first,second,third,fourth,fifth };
+	FuzzyList<string> l_fuzz1 = { sixth,seventh,eighth,ninth,tenth };
+
+	l_fuzz.DebugLog();
+
+	FuzzyList<string*> l_fuzzPtr = { pfirst,psecond,pthird,pfourth,pfifth };
+	FuzzyList<string*> l_fuzzPtr1 = { psixth,pseventh,peighth,pninth,ptenth };
+
+	string doThisNow = "doThisNow";
+
+	l_fuzz.AddRange(l_fuzz1);
+
+	l_fuzz.Add(doThisNow);
+
+
+	l_fuzz.DebugLog();
+
 	system("pause");
 	return 0;
 }

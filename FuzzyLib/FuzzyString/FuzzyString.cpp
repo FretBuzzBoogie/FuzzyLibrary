@@ -78,6 +78,26 @@ namespace FuzzyLib
 		return l_cptrConcat;
 	}
 
+	////Deletes all memory allocated by this class.
+	void FuzzyString :: DeleteAllocatedMemory()
+	{
+		if (m_cptrStrArr != NULL_TERMINATOR && m_cptrStrArr !=nullptr )
+		{
+			delete[] m_cptrStrArr;
+			m_cptrStrArr = nullptr;
+		}
+	}
+
+	////Copy constructor of FuzzyString to *this by r - value reference
+	void FuzzyString::CopyConstructorByValue(FuzzyString& a_FuzzyString)
+	{
+		DeleteAllocatedMemory();
+		m_cptrStrArr = a_FuzzyString.m_cptrStrArr;
+		m_iCapacity = a_FuzzyString.m_iCapacity;
+		m_iSize = a_FuzzyString.m_iSize;
+		a_FuzzyString.m_cptrStrArr = nullptr;
+	}
+
 	//////////PUBLIC SOURCE//////////
 
 #pragma region Constructors
@@ -88,9 +108,15 @@ namespace FuzzyLib
 	}
 
 	////Copy constructor
-	FuzzyString::FuzzyString(FuzzyString &a_FuzzyString)
+	FuzzyString::FuzzyString(const FuzzyString &a_FuzzyString)
 	{
 		AllocateAndAssignStr(a_FuzzyString.m_cptrStrArr);
+	}
+
+	////Copy constructor for r-value reference by move semantics.
+	FuzzyString::FuzzyString(FuzzyString&& a_FuzzyString)
+	{
+		CopyConstructorByValue(a_FuzzyString);
 	}
 
 	////Constructor to initialize the char ptr into the internal char array
@@ -119,13 +145,7 @@ namespace FuzzyLib
 	////Destructor to Destroy the FuzzyString Array
 	FuzzyString::~FuzzyString()
 	{
-		std::cout << "Destroying FuzzyString\n";
-
-		if (m_cptrStrArr != NULL_TERMINATOR)
-		{
-			delete[] m_cptrStrArr;
-			m_cptrStrArr = nullptr;
-		}
+		DeleteAllocatedMemory();
 	}
 
 	////Compares FuzzyString object and another FuzzyString Object
@@ -210,8 +230,13 @@ namespace FuzzyLib
 	////Sets FuzzyString.m_cptrStrArr = Int
 	void FuzzyString:: operator=(const int& a_Int)
 	{
-		
 		*this = FuzzyString(a_Int);
+	}
+
+	////operatir overloading for FuzzyString = r value a_FuzzyStringInput by reference.
+	void FuzzyString:: operator=(FuzzyString&& a_FuzzyStringInput)
+	{
+		CopyConstructorByValue(a_FuzzyStringInput);
 	}
 
 	////Concatenates FuzzyString += a_cptrInput

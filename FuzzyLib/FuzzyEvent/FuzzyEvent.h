@@ -20,5 +20,10 @@ namespace FuzzyLib
 			FuzzyEvent()
 			{
 			}
+
+			~FuzzyEvent()
+			{
+
+			}
 	};
 }

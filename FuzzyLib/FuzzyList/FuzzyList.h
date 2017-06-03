@@ -67,9 +67,9 @@ namespace FuzzyLib
 					{
 						tempList[l_iTempListIndex] = m_List[l_iTempListIndex];
 					}
+				delete[] m_List;
 				}
 
-				delete[] m_List;
 				m_List = new T*[a_iMemoryToAllocate];
 				m_iCapacity = a_iMemoryToAllocate;
 
@@ -126,7 +126,7 @@ namespace FuzzyLib
 					refListIndex = nullptr;
 				}
 				
-				delete m_List;
+				delete[] m_List;
 				m_List = nullptr;
 			}
 
