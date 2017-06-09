@@ -9,13 +9,16 @@ namespace FuzzyLib
 	template <typename T>
 	class FuzzyList : public IFuzzyDebug
 	{
-		///PRIVATE VARIABLES
+		///PROTECTED VARIABLES
 		private:
-			static constexpr int EMPTY_LIST_SIZE = 0;
-			static constexpr int DEFAULT_CAPACITY = 4;
+			T** m_List = nullptr;
 			int m_iCapacity = 0;
 			int m_iCount = 0;
-			T** m_List = nullptr;
+
+		///PROTECTED VARIABLES
+		protected:
+			static constexpr int EMPTY_LIST_SIZE = 0;
+			static constexpr int DEFAULT_CAPACITY = 4;
 
 		///PRIVATE SOURCE
 		private:
@@ -83,21 +86,6 @@ namespace FuzzyLib
 				}
 			}
 
-
-			// Get the variable stored at index by reference.
-			T& GetAtIndex(const int& a_iIndex) throw(std::out_of_range)
-			{
-				try
-				{
-					CheckForOutOfRange(a_iIndex);
-				}
-				catch (std::out_of_range& a_Exception)
-				{
-					throw;
-				}
-				return *(m_List[a_iIndex]);
-			}
-
 			//Deletes all allocated memory aquired by class.
 			void DeleteAllAllocated()
 			{
@@ -144,6 +132,20 @@ namespace FuzzyLib
 				{
 					throw;
 				}
+			}
+
+			// Get the variable stored at index by reference.
+			T& GetAtIndex(const int& a_iIndex) throw(std::out_of_range)
+			{
+				try
+				{
+					CheckForOutOfRange(a_iIndex);
+				}
+				catch (std::out_of_range& a_Exception)
+				{
+					throw;
+				}
+				return *(m_List[a_iIndex]);
 			}
 
 		///PUBLIC SOURCE

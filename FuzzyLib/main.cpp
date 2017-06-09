@@ -6,6 +6,30 @@
 using namespace FuzzyLib;
 using namespace std;
 
+class doFuzzyList : public FuzzyList<string*>
+{
+	public:
+
+		doFuzzyList(const std::initializer_list<string*>& a_initList) : FuzzyList<string*>(a_initList)
+		{
+		}
+
+	//Logs the contents of the List.
+	virtual void DebugLog() override
+	{
+		std::cout << "\nCount : " << GetCount() << "..... Size :: " << GetCapacity() << "\n";
+		string* l_currObjPtr = nullptr;
+		for (int l_iListIndex = 0; l_iListIndex < GetCount(); l_iListIndex++)
+		{
+			l_currObjPtr = GetAtIndex(l_iListIndex);
+			if (l_currObjPtr != nullptr)
+			{
+				std::cout << "Index Value::" << *l_currObjPtr << "\n";
+			}
+		}
+	}
+};
+
 int main(int argc, char** argv)
 {
 	string first = "first";
@@ -41,19 +65,18 @@ int main(int argc, char** argv)
 	FuzzyList<string> l_fuzz = { first,second,third,fourth,fifth };
 	FuzzyList<string> l_fuzz1 = { sixth,seventh,eighth,ninth,tenth };
 
-	l_fuzz.DebugLog();
-
-	FuzzyList<string*> l_fuzzPtr = { pfirst,psecond,pthird,pfourth,pfifth };
-	FuzzyList<string*> l_fuzzPtr1 = { psixth,pseventh,peighth,pninth,ptenth };
+	doFuzzyList l_fuzzPtr = { pfirst,psecond,pthird,pfourth,pfifth };
+	doFuzzyList l_fuzzPtr1 = { psixth,pseventh,peighth,pninth,ptenth };
 
 	string doThisNow = "doThisNow";
+	string* pdoThisNow = &doThisNow;
 
-	l_fuzz.AddRange(l_fuzz1);
+	l_fuzzPtr.AddRange(l_fuzzPtr1);
 
-	l_fuzz.Add(doThisNow);
+	l_fuzzPtr.Add(pdoThisNow);
 
 
-	l_fuzz.DebugLog();
+	l_fuzzPtr.DebugLog();
 
 	system("pause");
 	return 0;
