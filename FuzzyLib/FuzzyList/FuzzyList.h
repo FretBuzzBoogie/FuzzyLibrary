@@ -62,16 +62,10 @@ namespace FuzzyLib
 				T** tempList = m_List;
 				m_List = new T*[a_iMemoryToAllocate];
 
-				if (!tempList)
+				if(tempList)
 				{
-					for (int l_iTempListIndex = 0; l_iTempListIndex < m_iCapacity; l_iTempListIndex++)
-					{
-						m_List[l_iTempListIndex] = new T();
-					}
-				}
-				else
-				{
-					memcpy_s(m_List, sizeof(T*) * a_iMemoryToAllocate, tempList, sizeof(T*) * l_iCapacityBeforeResize);
+					int l_iSizeOfSingleListContent = sizeof(T*);
+					memcpy_s(m_List, l_iSizeOfSingleListContent * a_iMemoryToAllocate, tempList, l_iSizeOfSingleListContent * l_iCapacityBeforeResize);
 					for (int l_iTempListIndex = l_iCapacityBeforeResize; l_iTempListIndex < a_iMemoryToAllocate; l_iTempListIndex++)
 					{
 						m_List[l_iTempListIndex] = new T();
@@ -79,6 +73,13 @@ namespace FuzzyLib
 
 					delete[] tempList;
 					tempList = nullptr;
+				}
+				else
+				{
+					for (int l_iTempListIndex = 0; l_iTempListIndex < m_iCapacity; l_iTempListIndex++)
+					{
+						m_List[l_iTempListIndex] = new T();
+					}
 				}
 			}
 
