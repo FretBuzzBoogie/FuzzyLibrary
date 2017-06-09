@@ -56,24 +56,13 @@ namespace FuzzyLib
 			//If list is empty then do not copy contents of list before resize.
 			void ResizeList(const int& a_iMemoryToAllocate)
 			{
-				T** tempList = nullptr;
-				bool l_bIsListEmpty = m_List == nullptr;
 				int l_iCapacityBeforeResize = m_iCapacity;
-
-				if (!l_bIsListEmpty)
-				{
-					tempList = new T*[l_iCapacityBeforeResize];
-					for (int l_iTempListIndex = 0; l_iTempListIndex < l_iCapacityBeforeResize; l_iTempListIndex++)
-					{
-						tempList[l_iTempListIndex] = m_List[l_iTempListIndex];
-					}
-				delete[] m_List;
-				}
-
-				m_List = new T*[a_iMemoryToAllocate];
 				m_iCapacity = a_iMemoryToAllocate;
 
-				if (l_bIsListEmpty)
+				T** tempList = m_List;
+				m_List = new T*[a_iMemoryToAllocate];
+
+				if (!tempList)
 				{
 					for (int l_iTempListIndex = 0; l_iTempListIndex < m_iCapacity; l_iTempListIndex++)
 					{
@@ -82,13 +71,10 @@ namespace FuzzyLib
 				}
 				else
 				{
-					for (int l_iTempListIndex = 0; l_iTempListIndex < l_iCapacityBeforeResize; l_iTempListIndex++)
+					memcpy_s(m_List, sizeof(T*) * a_iMemoryToAllocate, tempList, sizeof(T*) * l_iCapacityBeforeResize);
+					for (int l_iTempListIndex = l_iCapacityBeforeResize; l_iTempListIndex < a_iMemoryToAllocate; l_iTempListIndex++)
 					{
-						m_List[l_iTempListIndex] = tempList[l_iTempListIndex];
-					}
-					for (int l_iListIndex = l_iCapacityBeforeResize; l_iListIndex < m_iCapacity; l_iListIndex++)
-					{
-						m_List[l_iListIndex] = new T();
+						m_List[l_iTempListIndex] = new T();
 					}
 
 					delete[] tempList;
