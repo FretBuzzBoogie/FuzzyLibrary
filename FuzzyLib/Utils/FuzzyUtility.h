@@ -1,10 +1,11 @@
 #pragma once
 #include <cmath>
+#include <memory>
 
 namespace FuzzyUtility
 {
 	//Converts an integer to a char*
-	static char* IntToChar(int a_Int)
+	static std::unique_ptr<char[]> IntToChar(int a_Int)
 	{
 		int l_iAbsNum = a_Int;
 		int l_iNumberOfDigits = 0;
@@ -25,7 +26,9 @@ namespace FuzzyUtility
 
 		const int l_iArraySize = l_bIsNegative ? l_iNumberOfDigits + 2 : l_iNumberOfDigits + 1;
 
-		char* l_return = new char[l_iArraySize];
+		/*char* l_return = new char[l_iArraySize];*/
+
+		std::unique_ptr<char[]>l_return(std::make_unique<char[]>(l_iArraySize));
 
 		int l_iNullTerminatorIndex = l_iArraySize - 1;
 		l_return[l_iNullTerminatorIndex] = '\0';

@@ -135,9 +135,7 @@ namespace FuzzyLib
 	////Constructor that initializes an int
 	FuzzyString::FuzzyString(const int &a_intInput)
 	{
-		char* l_CharConvertedInt = FuzzyUtility::IntToChar(a_intInput);
-		*this = l_CharConvertedInt;
-		delete[] l_CharConvertedInt;
+		*this = FuzzyUtility::IntToChar(a_intInput).get();
 	}
 
 #pragma endregion Constructors

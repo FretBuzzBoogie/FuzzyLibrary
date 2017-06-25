@@ -78,6 +78,10 @@ int main(int argc, char** argv)
 
 	l_fuzzPtr.DebugLog();
 
+
+	FuzzyString* doString = new FuzzyString(666);
+	doString->DebugLog();
+
 	system("pause");
 	return 0;
 }
