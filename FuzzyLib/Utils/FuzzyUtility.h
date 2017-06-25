@@ -26,8 +26,6 @@ namespace FuzzyUtility
 
 		const int l_iArraySize = l_bIsNegative ? l_iNumberOfDigits + 2 : l_iNumberOfDigits + 1;
 
-		/*char* l_return = new char[l_iArraySize];*/
-
 		std::unique_ptr<char[]>l_return(std::make_unique<char[]>(l_iArraySize));
 
 		int l_iNullTerminatorIndex = l_iArraySize - 1;
