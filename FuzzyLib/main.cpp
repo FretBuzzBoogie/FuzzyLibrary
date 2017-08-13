@@ -45,6 +45,11 @@ class doClass
 		{
 			return a - b;
 		}
+
+		static int Multiply(int a, int b)
+		{
+			return a * b;
+		}
 		
 
 		/*void TestThis()
@@ -60,8 +65,10 @@ int main(int argc, char** argv)
 	doClass testDoClass;
 	FuzzyDelegate<int(int, int)> fuzzDele;
 	fuzzDele.Add<doClass, &doClass::Subtract>(&testDoClass);
+	fuzzDele.Add<doClass, &doClass::Add>(&testDoClass);
 	cout<<"Printing result ::"<<fuzzDele.Invoke(5, 2);
 	fuzzDele.DebugLog();
+
 	system("pause");
 	return 0;
 }

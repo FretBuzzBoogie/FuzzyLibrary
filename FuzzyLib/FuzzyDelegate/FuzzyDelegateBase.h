@@ -45,22 +45,25 @@ namespace FuzzyLib
 			T_RET_TYPE Invoke(T_ARGS... a_Args)
 			{
 				int l_iFunListCount = m_pListActions->GetCount();
+				T_RET_TYPE l_Return{};
 				for (int l_iFuncIndex = 0; l_iFuncIndex < l_iFunListCount; l_iFuncIndex++)
 				{
-					return m_pListActions->GetAtIndex(l_iFuncIndex)->Invoke(a_Args...);
+					l_Return += m_pListActions->GetAtIndex(l_iFuncIndex)->Invoke(a_Args...);
 				}
+
+				return l_Return;
 			}
 
 	public:
 			
 			void DebugLog()
 			{
-				std::cout << "Debugging FuzzyDelecate\n";
+				std::cout << "\n\nDebugging FuzzyDelegate\n";
 
-					if (m_pListActions != nullptr)
-					{
-						std::cout << "FuzzyDelegate storing functions of return type "<< typeid(T_RET_TYPE).name()<< "()\n\n";
-					}
+				if (m_pListActions != nullptr)
+				{
+					std::cout << "FuzzyDelegate storing functions of return type "<< typeid(T_RET_TYPE).name()<< "()\n\n";
+				}
 			}
 	};
 
