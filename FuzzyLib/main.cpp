@@ -2,6 +2,8 @@
 #include <iostream>
 #include "FuzzyString\FuzzyString.h"
 #include "FuzzyList\FuzzyList.h"
+#include "FuzzyDelegate\FuzzyDelegate.h"
+#include "FuzzyDelegate\FuzzyAction.h"
 
 using namespace FuzzyLib;
 using namespace std;
@@ -30,58 +32,36 @@ class doFuzzyList : public FuzzyList<string*>
 	}
 };
 
+class doClass
+{
+	public:
+
+		int Add(int a, int b)
+		{
+			return a + b;
+		}
+
+		int Subtract(int a, int b)
+		{
+			return a - b;
+		}
+		
+
+		/*void TestThis()
+		{
+			doClass testDoClass;
+			FuzzyDelegate <int(int, int)> doDele;
+			auto d = decltype(doDele)::Create<doClass, &doClass::Subtract>(&testDoClass);
+		}*/
+};
+
 int main(int argc, char** argv)
 {
-	string first = "first";
-	string *pfirst = &first;
-
-	string second = "second";
-	string *psecond = &second;
-
-	string third = "third";
-	string *pthird = &third;
-
-	string fourth = "fourth";
-	string *pfourth = &fourth;
-
-	string fifth = "fifth";
-	string *pfifth = &fifth;
-
-	string sixth = "sixth";
-	string *psixth = &sixth;
-
-	string seventh = "seventh";
-	string *pseventh = &seventh;
-
-	string eighth = "eighth";
-	string *peighth = &eighth;
-
-	string ninth = "ninth";
-	string *pninth = &ninth;
-
-	string tenth = "tenth";
-	string *ptenth = &tenth;
-
-	FuzzyList<string> l_fuzz = { first,second,third,fourth,fifth };
-	FuzzyList<string> l_fuzz1 = { sixth,seventh,eighth,ninth,tenth };
-
-	doFuzzyList l_fuzzPtr = { pfirst,psecond,pthird,pfourth,pfifth };
-	doFuzzyList l_fuzzPtr1 = { psixth,pseventh,peighth,pninth,ptenth };
-
-	string doThisNow = "doThisNow";
-	string* pdoThisNow = &doThisNow;
-
-	l_fuzzPtr.AddRange(l_fuzzPtr1);
-
-	l_fuzzPtr.Add(pdoThisNow);
-
-
-	l_fuzzPtr.DebugLog();
-
-
-	FuzzyString doString(666);
-	doString.DebugLog();
-
+	doClass testDoClass;
+	FuzzyDelegate<int(int, int)> fuzzDele;
+	fuzzDele.Add<doClass, &doClass::Subtract>(&testDoClass);
+	cout<<"Printing result ::"<<fuzzDele.Invoke(5, 2);
+	fuzzDele.DebugLog();
 	system("pause");
 	return 0;
 }

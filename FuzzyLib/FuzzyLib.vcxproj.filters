@@ -44,5 +44,14 @@
     <ClInclude Include="FuzzyEvent\FuzzyEvent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="FuzzyDelegate\FuzzyDelegate.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FuzzyDelegate\FuzzyDelegateBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FuzzyDelegate\FuzzyAction.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

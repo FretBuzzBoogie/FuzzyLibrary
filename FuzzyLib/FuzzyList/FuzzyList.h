@@ -134,6 +134,9 @@ namespace FuzzyLib
 				}
 			}
 
+
+		///PUBLIC SOURCE
+		public:
 			// Get the variable stored at index by reference.
 			T& GetAtIndex(const int& a_iIndex) throw(std::out_of_range)
 			{
@@ -147,9 +150,6 @@ namespace FuzzyLib
 				}
 				return *(m_List[a_iIndex]);
 			}
-
-		///PUBLIC SOURCE
-		public:
 
 	#pragma region Constructor/Destructor
 	
