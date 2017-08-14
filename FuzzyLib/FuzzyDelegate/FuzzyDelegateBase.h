@@ -73,7 +73,6 @@ namespace FuzzyLib
 			T_RET_TYPE Invoke(T_ARGS... a_Args) throw(std::out_of_range)
 			{
 				int l_iFunListCount = m_pListActions->GetCount();
-<<<<<<< HEAD
 				std::cout << "Curr Count::" << l_iFunListCount << "\n";
 
 				try
@@ -108,15 +107,6 @@ namespace FuzzyLib
 			{
 				DeleteAllActions();
 				m_pListActions->Clear();
-=======
-				T_RET_TYPE l_Return{};
-				for (int l_iFuncIndex = 0; l_iFuncIndex < l_iFunListCount; l_iFuncIndex++)
-				{
-					l_Return += m_pListActions->GetAtIndex(l_iFuncIndex)->Invoke(a_Args...);
-				}
-
-				return l_Return;
->>>>>>> 3a362fd0bbc11ddde03c53f64452ed5117124cd7
 			}
 
 	public:
