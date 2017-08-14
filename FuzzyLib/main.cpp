@@ -36,32 +36,45 @@ class doClass
 {
 	public:
 
-		int Add(int a, int b)
-		{
-			return a + b;
-		}
-
-		int Subtract(int a, int b)
-		{
-			return a - b;
-		}
 		
 
-		/*void TestThis()
+		int printThis1(int)
 		{
-			doClass testDoClass;
-			FuzzyDelegate <int(int, int)> doDele;
-			auto d = decltype(doDele)::Create<doClass, &doClass::Subtract>(&testDoClass);
-		}*/
+			cout << "Printing 111 ... member func\n";
+			return 0;
+		}
+
+		int printThis2(int) const
+		{
+			cout << "Printing 222 ... const member func\n";
+			return 0;
+		}
+
+		static int printThis3(int)
+		{
+			cout << "Printing 333 ... static member func\n";
+			return 0;
+		}
 };
+
+int printThis4(int)
+{
+	cout << "Printing 444 ... global func\n";
+	return 0;
+}
 
 int main(int argc, char** argv)
 {
 	doClass testDoClass;
-	FuzzyDelegate<int(int, int)> fuzzDele;
-	fuzzDele.Add<doClass, &doClass::Subtract>(&testDoClass);
-	cout<<"Printing result ::"<<fuzzDele.Invoke(5, 2);
-	fuzzDele.DebugLog();
+	FuzzyDelegate<int(int)> fuzzDele;
+	fuzzDele.Add<doClass, &doClass::printThis1>(&testDoClass);
+	fuzzDele.Add<doClass, &doClass::printThis2>(&testDoClass);
+	fuzzDele.Add<&doClass::printThis3>();
+	fuzzDele.Add <&printThis4>();
+	fuzzDele.Invoke(6);
+
+	fuzzDele.Clear();
+	fuzzDele.Invoke(3);
 	system("pause");
 	return 0;
 }
