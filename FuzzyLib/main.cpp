@@ -49,6 +49,15 @@ class doClass
 			cout << "Printing 222 ... const member func\n";
 			return 0;
 		}
+<<<<<<< HEAD
+=======
+
+		static int Multiply(int a, int b)
+		{
+			return a * b;
+		}
+		
+>>>>>>> 3a362fd0bbc11ddde03c53f64452ed5117124cd7
 
 		static int printThis3(int)
 		{
@@ -66,6 +75,7 @@ int printThis4(int)
 int main(int argc, char** argv)
 {
 	doClass testDoClass;
+<<<<<<< HEAD
 	FuzzyDelegate<int(int)> fuzzDele;
 	fuzzDele.Add<doClass, &doClass::printThis1>(&testDoClass);
 	fuzzDele.Add<doClass, &doClass::printThis2>(&testDoClass);
@@ -75,6 +85,14 @@ int main(int argc, char** argv)
 
 	fuzzDele.Clear();
 	fuzzDele.Invoke(3);
+=======
+	FuzzyDelegate<int(int, int)> fuzzDele;
+	fuzzDele.Add<doClass, &doClass::Subtract>(&testDoClass);
+	fuzzDele.Add<doClass, &doClass::Add>(&testDoClass);
+	cout<<"Printing result ::"<<fuzzDele.Invoke(5, 2);
+	fuzzDele.DebugLog();
+
+>>>>>>> 3a362fd0bbc11ddde03c53f64452ed5117124cd7
 	system("pause");
 	return 0;
 }
