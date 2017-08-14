@@ -80,7 +80,7 @@ namespace FuzzyLib
 					if (l_iFunListCount == 0)
 					{
 						char* l_Error = "Delegate is empty\n";
-						throw out_of_range(l_Error);
+						throw std::out_of_range(l_Error);
 					}
 
 
