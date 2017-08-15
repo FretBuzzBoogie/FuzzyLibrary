@@ -3,41 +3,13 @@
 #include "FuzzyString\FuzzyString.h"
 #include "FuzzyList\FuzzyList.h"
 #include "FuzzyDelegate\FuzzyDelegate.h"
-#include "FuzzyDelegate\FuzzyAction.h"
 
 using namespace FuzzyLib;
 using namespace std;
 
-class doFuzzyList : public FuzzyList<string*>
-{
-	public:
-
-		doFuzzyList(const std::initializer_list<string*>& a_initList) : FuzzyList<string*>(a_initList)
-		{
-		}
-
-	//Logs the contents of the List.
-	virtual void DebugLog() override
-	{
-		std::cout << "\nCount : " << GetCount() << "..... Size :: " << GetCapacity() << "\n";
-		string* l_currObjPtr = nullptr;
-		for (int l_iListIndex = 0; l_iListIndex < GetCount(); l_iListIndex++)
-		{
-			l_currObjPtr = GetAtIndex(l_iListIndex);
-			if (l_currObjPtr != nullptr)
-			{
-				std::cout << "Index Value::" << *l_currObjPtr << "\n";
-			}
-		}
-	}
-};
-
 class doClass
 {
 	public:
-
-		
-
 		int printThis1(int)
 		{
 			cout << "Printing 111 ... member func\n";
