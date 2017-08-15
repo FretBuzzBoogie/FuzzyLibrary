@@ -25,10 +25,29 @@ namespace FuzzyLib
 			virtual ~IFuzzyAction()
 			{
 			}
+
+			///Return an Action of member type 
+			template<typename T_CLASS_TYPE, T_RET_TYPE(T_CLASS_TYPE::*T_METHOD)(T_ARGS...)>
+			static IFuzzyAction<T_RET_TYPE(T_ARGS...)>* GetIFuzzyAction(T_CLASS_TYPE*& a_pInstance)
+			{
+				return static_cast<IFuzzyAction<T_RET_TYPE(T_ARGS...)>* >(FuzzyAction<T_RET_TYPE(T_ARGS...)>::GetFuzzyAction<T_CLASS_TYPE, T_METHOD>(a_pInstance));
+			}
+
+			///Return an Action of const member type 
+			template<typename T_CLASS_TYPE, T_RET_TYPE(T_CLASS_TYPE::*T_METHOD)(T_ARGS...)const>
+			static IFuzzyAction<T_RET_TYPE(T_ARGS...)>* GetIFuzzyAction(T_CLASS_TYPE* const a_pInstance)
+			{
+				return static_cast<IFuzzyAction<T_RET_TYPE(T_ARGS...)>*>(FuzzyAction<T_RET_TYPE(T_ARGS...)>::GetFuzzyAction<T_CLASS_TYPE, T_METHOD>(a_pInstance));
+			}
+			
+			///Return an Action of static / global type 
+			template<T_RET_TYPE(*T_METHOD)(T_ARGS...)>
+			static IFuzzyAction<T_RET_TYPE(T_ARGS...)>* GetIFuzzyAction()
+			{
+				return static_cast<IFuzzyAction<T_RET_TYPE(T_ARGS...)>*>(FuzzyAction<T_RET_TYPE(T_ARGS...)>::GetFuzzyAction<T_METHOD>());
+			}
 	};
 #pragma endregion Interface for a Fuzzy Action
-
-
 
 
 #pragma region Fuzzy Action
@@ -38,84 +57,86 @@ namespace FuzzyLib
 	template<typename T_RET_TYPE, typename ...T_ARGS>
 	class FuzzyAction <T_RET_TYPE(T_ARGS...)> : public IFuzzyAction<T_RET_TYPE(T_ARGS...)>
 	{
+		///PRIVATE VARIABLES
+		private:
+			///Function template
+			using FUNC_STUB = T_RET_TYPE(*)(void*, T_ARGS...);
 
-	///PRIVATE VARIABLES
-	private:
-		///Function template
-		using FUNC_STUB = T_RET_TYPE(*)(void*, T_ARGS...);
+			///Function pointer of the delegate type to be called
+			FUNC_STUB m_pFuncStub = nullptr;
 
-		///Function pointer of the delegate type to be called
-		FUNC_STUB m_pFuncStub = nullptr;
+			///Pointer to the object which cointains the function to be called
+			void* m_pObjectPtr = nullptr;
 
-		///Pointer to the object which cointains the function to be called
-		void* m_pObjectPtr = nullptr;
+		///PRIVATE SOURCE
+		private:
 
-	///PRIVATE SOURCE
-	private:
+			///Constructor
+			FuzzyAction(void* a_pObj , FUNC_STUB a_pFuncStub)
+			{
+				m_pObjectPtr = a_pObj;
+				m_pFuncStub = a_pFuncStub;
+			}
 
-		///Constructor
-		FuzzyAction(void* a_pObj , FUNC_STUB a_pFuncStub)
-		{
-			m_pObjectPtr = a_pObj;
-			m_pFuncStub = a_pFuncStub;
-		}
+			///Return an Action of member type 
+			template<typename T_CLASS_TYPE, T_RET_TYPE(T_CLASS_TYPE::*T_METHOD)(T_ARGS...)>
+			static FuzzyAction<T_RET_TYPE(T_ARGS...)>* GetFuzzyAction(T_CLASS_TYPE*& a_pInstance)
+			{
+				return new FuzzyAction<T_RET_TYPE(T_ARGS...)>(a_pInstance, FunctionBlueprint<T_CLASS_TYPE, T_METHOD>);
+			}
 
-	public:
+			///Return an Action of const member type 
+			template<typename T_CLASS_TYPE, T_RET_TYPE(T_CLASS_TYPE::*T_METHOD)(T_ARGS...)const>
+			static FuzzyAction<T_RET_TYPE(T_ARGS...)>* GetFuzzyAction(T_CLASS_TYPE* const a_pInstance)
+			{
+				return new FuzzyAction<T_RET_TYPE(T_ARGS...)>(a_pInstance, FunctionBlueprint<T_CLASS_TYPE, T_METHOD>);
+			}
 
-		///Constructor
-		FuzzyAction() = delete;
+			///Return an Action of static / global type 
+			template<T_RET_TYPE(*T_METHOD)(T_ARGS...)>
+			static FuzzyAction<T_RET_TYPE(T_ARGS...)>* GetFuzzyAction()
+			{
+				return new FuzzyAction<T_RET_TYPE(T_ARGS...)>(nullptr, FunctionBlueprint<T_METHOD>);
+			}
 
-		///Return an Action of member type 
-		template<typename T_CLASS_TYPE, T_RET_TYPE(T_CLASS_TYPE::*T_METHOD)(T_ARGS...)>
-		static FuzzyAction<T_RET_TYPE(T_ARGS...)>* GetFuzzyAction(T_CLASS_TYPE*& a_pInstance)
-		{
-			return new FuzzyAction<T_RET_TYPE(T_ARGS...)>(a_pInstance, FunctionBlueprint<T_CLASS_TYPE, T_METHOD>);
-		}
+		public:
 
-		///Return an Action of const member type 
-		template<typename T_CLASS_TYPE, T_RET_TYPE(T_CLASS_TYPE::*T_METHOD)(T_ARGS...)const>
-		static FuzzyAction<T_RET_TYPE(T_ARGS...)>* GetFuzzyAction(T_CLASS_TYPE* const a_pInstance)
-		{
-			return new FuzzyAction<T_RET_TYPE(T_ARGS...)>(a_pInstance, FunctionBlueprint<T_CLASS_TYPE, T_METHOD>);
-		}
+			friend class IFuzzyAction<T_RET_TYPE(T_ARGS...)>;
 
-		///Return an Action of static / global type 
-		template<T_RET_TYPE(*T_METHOD)(T_ARGS...)>
-		static FuzzyAction<T_RET_TYPE(T_ARGS...)>* GetFuzzyAction()
-		{
-			return new FuzzyAction<T_RET_TYPE(T_ARGS...)>(nullptr, FunctionBlueprint<T_METHOD>);
-		}
+			///Constructor
+			FuzzyAction() = delete;
 
-		///Acts as a member function template
-		template<typename T_CLASS_TYPE, T_RET_TYPE(T_CLASS_TYPE::*T_METHOD)(T_ARGS...)>
-		static T_RET_TYPE FunctionBlueprint(void* a_pObj, T_ARGS... a_Args )
-		{
-			T_CLASS_TYPE* l_Obj = static_cast<T_CLASS_TYPE*>(a_pObj);
-			return (l_Obj->*T_METHOD)(a_Args...);
-		}
-
-		///Acts as a const member function template
-		template<typename T_CLASS_TYPE, T_RET_TYPE(T_CLASS_TYPE::*T_METHOD)(T_ARGS...) const>
-		static T_RET_TYPE FunctionBlueprint(void* a_pObj, T_ARGS... a_Args)
-		{
-			T_CLASS_TYPE* l_Obj = static_cast<T_CLASS_TYPE*>(a_pObj);
-			return (l_Obj->*T_METHOD)(a_Args...);
-		}
-
-		///Acts as a static function template
-		template<T_RET_TYPE(*T_METHOD)(T_ARGS...)>
-		static T_RET_TYPE FunctionBlueprint(void* a_pObj, T_ARGS... a_Args)
-		{
-			return (*T_METHOD)(a_Args...);
-		}
 		
-	protected:
+		protected:
 
-		///Calls the function
-		virtual T_RET_TYPE Invoke(T_ARGS... a_Args) const override
-		{
-			return (*m_pFuncStub)(m_pObjectPtr ,a_Args...);
-		}
+			///Acts as a member function template
+			template<typename T_CLASS_TYPE, T_RET_TYPE(T_CLASS_TYPE::*T_METHOD)(T_ARGS...)>
+			static T_RET_TYPE FunctionBlueprint(void* a_pObj, T_ARGS... a_Args )
+			{
+				T_CLASS_TYPE* l_Obj = static_cast<T_CLASS_TYPE*>(a_pObj);
+				return (l_Obj->*T_METHOD)(a_Args...);
+			}
+
+			///Acts as a const member function template
+			template<typename T_CLASS_TYPE, T_RET_TYPE(T_CLASS_TYPE::*T_METHOD)(T_ARGS...) const>
+			static T_RET_TYPE FunctionBlueprint(void* a_pObj, T_ARGS... a_Args)
+			{
+				T_CLASS_TYPE* l_Obj = static_cast<T_CLASS_TYPE*>(a_pObj);
+				return (l_Obj->*T_METHOD)(a_Args...);
+			}
+
+			///Acts as a static function template
+			template<T_RET_TYPE(*T_METHOD)(T_ARGS...)>
+			static T_RET_TYPE FunctionBlueprint(void* a_pObj, T_ARGS... a_Args)
+			{
+				return (*T_METHOD)(a_Args...);
+			}
+
+			///Calls the function
+			virtual T_RET_TYPE Invoke(T_ARGS... a_Args) const override
+			{
+				return (*m_pFuncStub)(m_pObjectPtr ,a_Args...);
+			}
 	};
 
 	#pragma endregion Fuzzy Action

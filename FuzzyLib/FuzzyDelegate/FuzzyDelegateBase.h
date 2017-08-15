@@ -15,8 +15,11 @@ namespace FuzzyLib
 	{
 
 		private:
+
+			using T_IFUZZY_ACTION = IFuzzyAction<T_RET_TYPE(T_ARGS...)>;
+
 			///List to store all the FuzzyActions of the same type
-			FuzzyList<IFuzzyAction<T_RET_TYPE(T_ARGS...)>*>* m_pListActions = nullptr;
+			FuzzyList<T_IFUZZY_ACTION*>* m_pListActions = nullptr;
 
 			///Deletes all actions stored in the delegate list
 			void DeleteAllActions()
@@ -32,7 +35,7 @@ namespace FuzzyLib
 			///Constructor, Instantiates the List that stores the Actions of type T_RET_TYPE(T_ARGS...)
 			FuzzyDelegateBase()
 			{
-				m_pListActions = new FuzzyList<IFuzzyAction<T_RET_TYPE(T_ARGS...)>*>();
+				m_pListActions = new FuzzyList<T_IFUZZY_ACTION*>();
 			}
 
 			///Destructor
@@ -46,8 +49,7 @@ namespace FuzzyLib
 			template<typename T_CLASS_TYPE, T_RET_TYPE(T_CLASS_TYPE::*T_METHOD)(T_ARGS...)>
 			void Add(T_CLASS_TYPE* a_Instance)
 			{
-				FuzzyAction<T_RET_TYPE(T_ARGS...) >* l_pNewFuzzyAction = FuzzyAction<T_RET_TYPE(T_ARGS...) >::GetFuzzyAction<T_CLASS_TYPE, T_METHOD>(a_Instance);
-				IFuzzyAction<T_RET_TYPE(T_ARGS...)>* l_pNewIFuzzyAction = static_cast<IFuzzyAction<T_RET_TYPE(T_ARGS...)>*>(l_pNewFuzzyAction);
+				T_IFUZZY_ACTION* l_pNewIFuzzyAction = T_IFUZZY_ACTION::GetIFuzzyAction<T_CLASS_TYPE, T_METHOD>(a_Instance);
 				m_pListActions->Add(l_pNewIFuzzyAction);
 			}
 
@@ -55,17 +57,15 @@ namespace FuzzyLib
 			template<typename T_CLASS_TYPE, T_RET_TYPE(T_CLASS_TYPE::*T_METHOD)(T_ARGS...) const>
 			void Add(T_CLASS_TYPE* const a_Instance)
 			{
-				FuzzyAction<T_RET_TYPE(T_ARGS...) >* const l_pNewFuzzyAction = FuzzyAction<T_RET_TYPE(T_ARGS...) >::GetFuzzyAction<T_CLASS_TYPE, T_METHOD>(a_Instance);
-				IFuzzyAction<T_RET_TYPE(T_ARGS...)>* const l_pNewIFuzzyAction = static_cast<IFuzzyAction<T_RET_TYPE(T_ARGS...)>*>(l_pNewFuzzyAction);
-				m_pListActions->Add(const_cast<IFuzzyAction<T_RET_TYPE(T_ARGS...) >*>(l_pNewIFuzzyAction));
+				T_IFUZZY_ACTION* const l_pNewIFuzzyAction = T_IFUZZY_ACTION::GetIFuzzyAction<T_CLASS_TYPE, T_METHOD>(a_Instance);
+				m_pListActions->Add(const_cast<T_IFUZZY_ACTION*>(l_pNewIFuzzyAction));
 			}
 
 			///Adds an static or global action into the list
 			template<T_RET_TYPE(*T_METHOD)(T_ARGS...)>
 			void Add()
 			{
-				FuzzyAction<T_RET_TYPE(T_ARGS...) >* l_pNewFuzzyAction = FuzzyAction<T_RET_TYPE(T_ARGS...) >::GetFuzzyAction<T_METHOD>();
-				IFuzzyAction<T_RET_TYPE(T_ARGS...)>* l_l_pNewIFuzzyAction = static_cast<IFuzzyAction<T_RET_TYPE(T_ARGS...)>*>(l_pNewFuzzyAction);
+				T_IFUZZY_ACTION* l_l_pNewIFuzzyAction = T_IFUZZY_ACTION::GetIFuzzyAction<T_METHOD>();
 				m_pListActions->Add(l_l_pNewIFuzzyAction);
 			}
 
@@ -83,7 +83,6 @@ namespace FuzzyLib
 						throw out_of_range(l_Error);
 					}
 
-
 					for (int l_iFuncIndex = 0; l_iFuncIndex < l_iFunListCount - 1; l_iFuncIndex++)
 					{
 						m_pListActions->GetAtIndex(l_iFuncIndex)->Invoke(a_Args...);
@@ -94,7 +93,6 @@ namespace FuzzyLib
 						return m_pListActions->GetAtIndex((l_iFunListCount - 1))->Invoke(a_Args...);
 					}
 					m_pListActions->GetAtIndex((l_iFunListCount - 1))->Invoke(a_Args...);
-
 				}
 				catch (std::out_of_range& a_Exception)
 				{
