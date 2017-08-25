@@ -6,10 +6,10 @@ similar to that found in C# data types like a List, String, Delegates and allow 
 as a practice project to better understand the under-the-hood workings of C# data types and its memory management,
 I hope to use this library in my own work and would be happy to see someone use it for their projects.
 
-FuzzyDelegates is a component of the project which is based upon the idea of delegates from Sergey Alexandrovich Kryukov fantastic
+FuzzyDelegates is a component of the project which is based upon the idea of delegates from Sergey Alexandrovich Kryukov's fantastic
 article 'The Impossibly Fast C++ Delegates'
 
-https://www.codeproject.com/Articles/1170503/The-Impossibly-Fast-Cplusplus-Delegates-Fixed 
+https://www.codeproject.com/Articles/1170503/The-Impossibly-Fast-Cplusplus-Delegates-Fixed
 It is only fair I mention his article as much of my learning curve to understand a generic C++ function pointer was understood from it.
 
 The file titled 'Utilities' is a practise/dump file. I intend to write several global functions in that file over the course of this project.
