@@ -43,10 +43,10 @@ int main(int argc, char** argv)
 	fuzzDele.Add<doClass, &doClass::printThis2>(&testDoClass);
 	fuzzDele.Add<&doClass::printThis3>();
 	fuzzDele.Add <&printThis4>();
-	fuzzDele.Invoke(6);
+	fuzzDele(6);
 
 	fuzzDele.Clear();
-	fuzzDele.Invoke(3);
+	fuzzDele(3);
 	system("pause");
 	return 0;
 }

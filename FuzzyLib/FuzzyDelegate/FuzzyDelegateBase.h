@@ -25,9 +25,11 @@ namespace FuzzyLib
 			void DeleteAllActions()
 			{
 				int l_iActionListCount = m_pListActions->GetCount();
+				FuzzyList<T_IFUZZY_ACTION*>& l_CurrFuzzList = *m_pListActions;
+
 				for (int l_iListIndex = 0; l_iListIndex < l_iActionListCount; l_iListIndex++)
 				{
-					delete m_pListActions->GetAtIndex(l_iListIndex);
+					delete l_CurrFuzzList[l_iListIndex];
 				}
 			}
 
@@ -83,16 +85,19 @@ namespace FuzzyLib
 						throw std::out_of_range(l_Error);
 					}
 
+					FuzzyList<T_IFUZZY_ACTION*>& l_CurrFuzzList = *m_pListActions;
+
 					for (int l_iFuncIndex = 0; l_iFuncIndex < l_iFunListCount - 1; l_iFuncIndex++)
 					{
-						m_pListActions->GetAtIndex(l_iFuncIndex)->Invoke(a_Args...);
+						l_CurrFuzzList[l_iFuncIndex]->Invoke(a_Args...);
 					}
+
+					T_RET_TYPE l_tReturn = l_CurrFuzzList[l_iFunListCount - 1]->Invoke(a_Args...);
 
 					if (typeid(T_RET_TYPE) != typeid(void))
 					{
-						return m_pListActions->GetAtIndex((l_iFunListCount - 1))->Invoke(a_Args...);
+						return l_tReturn;
 					}
-					m_pListActions->GetAtIndex((l_iFunListCount - 1))->Invoke(a_Args...);
 				}
 				catch (std::out_of_range& a_Exception)
 				{

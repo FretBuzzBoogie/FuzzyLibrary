@@ -49,6 +49,11 @@ namespace FuzzyLib
 				}
 			}
 
+			T_RET_TYPE operator()(T_ARGS... a_Args)
+			{
+				return Invoke(a_Args...);
+			}
+
 			///Logs the contents of the List.
 			virtual void DebugLog() override
 			{

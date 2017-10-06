@@ -21,9 +21,6 @@
     <ClCompile Include="FuzzyString\FuzzyString.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="FuzzyEvent\Manager\EventManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FuzzyList\FuzzyList.h">
@@ -36,12 +33,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Utils\FuzzyUtility.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="FuzzyEvent\Manager\EventManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="FuzzyEvent\FuzzyEvent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="FuzzyDelegate\FuzzyDelegate.h">

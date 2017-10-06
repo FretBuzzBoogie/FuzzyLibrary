@@ -113,7 +113,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="FuzzyEvent\Manager\EventManager.cpp" />
     <ClCompile Include="FuzzyString\FuzzyString.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
@@ -121,8 +120,6 @@
     <ClInclude Include="FuzzyDelegate\FuzzyDelegate.h" />
     <ClInclude Include="FuzzyDelegate\FuzzyDelegateBase.h" />
     <ClInclude Include="FuzzyDelegate\FuzzyAction.h" />
-    <ClInclude Include="FuzzyEvent\FuzzyEvent.h" />
-    <ClInclude Include="FuzzyEvent\Manager\EventManager.h" />
     <ClInclude Include="Utils\FuzzyUtility.h" />
     <ClInclude Include="Utils\IFuzzyDebug.h" />
     <ClInclude Include="FuzzyList\FuzzyList.h" />
