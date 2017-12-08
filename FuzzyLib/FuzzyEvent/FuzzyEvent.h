@@ -25,7 +25,6 @@ namespace FuzzyLib
 			m_pEventHandler{ EventSystem::GetInstance() },
 			m_pTEvent{ a_pTEvent }
 		{
-			
 		}
 
 		/*virtual ~FuzzyEvent() = 0;*/

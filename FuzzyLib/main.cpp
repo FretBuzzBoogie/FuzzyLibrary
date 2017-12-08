@@ -52,9 +52,7 @@ int main(int argc, char** argv)
 		FuzzyList<string*> l_FuzzString = { Do1 ,Do2 ,Do3 ,Do4 ,Do5 };
 
 		l_FuzzString.DebugLog();
-		l_FuzzString.Remove(Do2);
 
-		l_FuzzString.DebugLog();
 	}
 
 	cout << "string 1 :: '"<<Do2<<"'\n";
@@ -83,7 +81,11 @@ int main(int argc, char** argv)
 
 	l_eventHandler1->AddListener<InputEvent, InputListener>(m_InputEvt, m_InputListener);
 
-	std::cout<<"Container count::'"<<l_eventHandler1->GetCount()<<"'\n";
+	l_eventSystem->DebugLog();
+
+	l_eventHandler1->RemoveListener<InputEvent, InputListener>(m_InputEvt, m_InputListener);
+
+	delete l_eventHandler1;
 
 	l_eventSystem->DebugLog();
 
