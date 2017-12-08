@@ -248,6 +248,18 @@ namespace FuzzyLib
 				m_iCount = l_iCountAfterRemoval;
 			}
 
+			//Removes object
+			void Remove(const T& a_Obj)
+			{
+				for (int l_iListIndex = 0; l_iListIndex < m_iCount; l_iListIndex++)
+				{
+					if (m_List[l_iListIndex] != nullptr && (*m_List[l_iListIndex]) == a_Obj)
+					{
+						Remove(l_iListIndex);
+					}
+				}
+			}
+
 	#pragma endregion List Manipulation Functions
 
 	#pragma region Getters

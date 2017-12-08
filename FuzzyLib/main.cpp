@@ -3,6 +3,9 @@
 #include "FuzzyString\FuzzyString.h"
 #include "FuzzyList\FuzzyList.h"
 #include "FuzzyDelegate\FuzzyDelegate.h"
+#include "FuzzyEvent\FuzzyEvent.h"
+#include "FuzzyEvent\EventSystem.h"
+#include "FuzzyEvent\EventHandler.h"
 
 using namespace FuzzyLib;
 using namespace std;
@@ -37,6 +40,26 @@ int printThis4(int)
 
 int main(int argc, char** argv)
 {
+
+	///testing fuzzy list
+	string *Do1 = &string("hello");
+	string *Do2 = &string("my");
+	string *Do3 = &string("name");
+	string *Do4 = &string("is");
+	string *Do5 = &string("paul");
+
+	{
+		FuzzyList<string*> l_FuzzString = { Do1 ,Do2 ,Do3 ,Do4 ,Do5 };
+
+		l_FuzzString.DebugLog();
+		l_FuzzString.Remove(Do2);
+
+		l_FuzzString.DebugLog();
+	}
+
+	cout << "string 1 :: '"<<Do2<<"'\n";
+
+	///testing fuzzy delegates
 	doClass testDoClass;
 	FuzzyDelegate<int(int)> fuzzDele;
 	fuzzDele.Add<doClass, &doClass::printThis1>(&testDoClass);
@@ -47,6 +70,25 @@ int main(int argc, char** argv)
 
 	fuzzDele.Clear();
 	fuzzDele(3);
+
+
+	//testing fuzzy events
+
+	InputEvent m_InputEvt;
+	InputListener m_InputListener;
+
+	EventSystem* const l_eventSystem = EventSystem::GetInstance();
+
+	EventHandler* l_eventHandler1 = new EventHandler();
+
+	l_eventHandler1->AddListener<InputEvent, InputListener>(m_InputEvt, m_InputListener);
+
+
+
+	l_eventSystem->DebugLog();
+
+	EventSystem::Destroy();
+
 	system("pause");
 	return 0;
 }
