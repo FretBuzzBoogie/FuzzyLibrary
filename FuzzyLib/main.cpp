@@ -78,12 +78,15 @@ int main(int argc, char** argv)
 	EventSystem* const l_eventSystem = EventSystem::GetInstance();
 
 	EventHandler* l_eventHandler1 = new EventHandler();
+	l_eventSystem->DebugLog();
 
 	l_eventHandler1->AddListener<InputEvent, InputListener>(m_InputEvt, m_InputListener);
 
-	l_eventSystem->DebugLog();
+	std::cout<<"Listener Count ::'"<<l_eventHandler1->GetListenerCountOfType<InputEvent>()<<"'\n";
 
 	l_eventHandler1->RemoveListener<InputEvent, InputListener>(m_InputEvt, m_InputListener);
+
+	std::cout << "Listener Count ::'" << l_eventHandler1->GetListenerCountOfType<InputEvent>() << "'\n";
 
 	delete l_eventHandler1;
 

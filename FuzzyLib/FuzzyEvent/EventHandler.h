@@ -41,12 +41,28 @@ namespace FuzzyLib
 
 		const int GetCount() const;
 
+		template<typename EVENT_TYPE>
+		const int GetListenerCountOfType() const;
+
 		template<typename EVENT_TYPE, typename LISTENER_TYPE>
 		void RemoveListener(EVENT_TYPE& a_pClassType, LISTENER_TYPE& a_pListener);
 
 		template<typename EVENT_TYPE, typename LISTENER_TYPE>
 		void AddListener(EVENT_TYPE& a_pClassType, LISTENER_TYPE& a_pListener);
 	};
+
+
+	template<typename EVENT_TYPE>
+	const int EventHandler::GetListenerCountOfType() const
+	{
+		const std::type_info& l_TypeIdToAdd = typeid(EVENT_TYPE);
+		if (m_pUMapRegisteredListener->find(l_TypeIdToAdd) != m_pUMapRegisteredListener->end())
+		{
+			return m_pUMapRegisteredListener->at(l_TypeIdToAdd)->GetCount();
+		}
+
+		return 0;
+	}
 
 	//Removes the listener bound to a particular event from that event handler registered list
 	template<typename EVENT_TYPE, typename LISTENER_TYPE>
@@ -74,13 +90,11 @@ namespace FuzzyLib
 				}
 			}
 
-			//RegisteredListener*& l_pRegisteredListener
 			if (l_pRegistrationToRemove != nullptr)
 			{
 				l_pListRegListener->Remove(l_pRegistrationToRemove);
-				delete l_pListRegListener;
-				l_pListRegListener = nullptr;
-				std::cout << "Deleting!!!\n";
+				delete l_pRegistrationToRemove;
+				l_pRegistrationToRemove = nullptr;
 			}
 		}
 	}
