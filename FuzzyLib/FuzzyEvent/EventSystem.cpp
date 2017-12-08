@@ -34,6 +34,23 @@ namespace FuzzyLib
 		}
 	}
 
+	//fires the event in the list of handlers stored
+	void EventSystem::Fire(IEvent& a_pIEventObj)
+	{
+		if (s_pEventSystem == nullptr)
+		{
+			std::cout << "EventSystem::Fire:: EventSystem is not initialized\n";
+			return;
+		}
+
+		int l_iHandlerCount = s_pEventSystem->GetEventHandlerCount();
+		FuzzyList<EventHandler*>& l_refListEventhandler = *(s_pEventSystem->m_pListEventHandler);
+		for (int l_iHandlerIndex = 0; l_iHandlerIndex < l_iHandlerCount; l_iHandlerIndex++)
+		{
+			l_refListEventhandler[l_iHandlerIndex]->Fire(a_pIEventObj);
+		}
+	}
+
 	//Adds the specified event handler into the List of all Event handlers
 	void EventSystem::RegisterEventHandler(EventHandler* a_EventHandler)
 	{

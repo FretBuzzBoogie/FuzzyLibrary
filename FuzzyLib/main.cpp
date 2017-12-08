@@ -83,6 +83,8 @@ int main(int argc, char** argv)
 	l_eventHandler1->AddListener<InputEvent, InputListener>(m_InputEvt, m_InputListener);
 
 	std::cout<<"Listener Count ::'"<<l_eventHandler1->GetListenerCountOfType<InputEvent>()<<"'\n";
+	EventSystem::Fire(m_InputEvt);
+	l_eventHandler1->DebugLog();
 
 	l_eventHandler1->RemoveListener<InputEvent, InputListener>(m_InputEvt, m_InputListener);
 

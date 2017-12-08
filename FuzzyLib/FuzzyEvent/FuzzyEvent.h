@@ -9,43 +9,34 @@ namespace FuzzyLib
 	private:
 
 	public:
-		//virtual ~IEvent() = 0;
+		virtual ~IEvent() = 0
+		{}
 	};
 
-	template<typename T>
-	class FuzzyEvent :virtual public IEvent
+	class FuzzyEvent : public IEvent
 	{
 	private:
-		T* const m_pTEvent = nullptr;
 
 	public:
-		EventSystem* const m_pEventHandler = nullptr;
-
-		FuzzyEvent( T* const a_pTEvent) :
-			m_pEventHandler{ EventSystem::GetInstance() },
-			m_pTEvent{ a_pTEvent }
+		FuzzyEvent()
 		{
 		}
 
-		/*virtual ~FuzzyEvent() = 0;*/
-
-		void Fire(const std::type_info& a_Type, const FuzzyEvent*& a_EventHandle)
-		{
-			EventSystem::Fire();
-		}
+		virtual ~FuzzyEvent() = 0
+		{}
 	};
 
-	class InputEvent : public FuzzyEvent<InputEvent>
+	class InputEvent : public FuzzyEvent
 	{
 	public:
-		InputEvent() : FuzzyEvent(this)
+		InputEvent() : FuzzyEvent()
 		{
 
 		}
 
-		/*virtual ~InputEvent()
+		virtual ~InputEvent()
 		{
 			
-		}*/
+		}
 	};
 }

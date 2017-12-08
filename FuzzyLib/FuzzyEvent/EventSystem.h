@@ -4,8 +4,8 @@
 
 namespace FuzzyLib
 {
-	template<typename T>
 	class FuzzyEvent;
+	class IEvent;
 
 	class EventHandler;
 
@@ -23,6 +23,8 @@ namespace FuzzyLib
 
 		static EventSystem* const GetInstance();
 		static void Destroy();
+
+		static void Fire(IEvent& a_pIEventObj);
 
 		void RegisterEventHandler(EventHandler* a_EventHandler);
 		void UnregisterEventHandler(EventHandler* a_EventHandler);

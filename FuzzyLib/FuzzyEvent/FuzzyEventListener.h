@@ -1,4 +1,5 @@
 #pragma once
+#include "FuzzyEvent.h"
 
 namespace FuzzyLib
 {
@@ -8,6 +9,8 @@ namespace FuzzyLib
 
 	public:
 		virtual ~IEventListener() {};
+
+		virtual void Dispatch(IEvent& a_pEvent) = 0;
 	};
 
 	template<typename T>
@@ -21,20 +24,18 @@ namespace FuzzyLib
 			
 		}
 
-		virtual ~FuzzyEventListener(){}
+		virtual ~FuzzyEventListener() {};
 
-		void AddEventListener()
+		virtual void OnEvent(T* a_pEvent) = 0;
+
+		virtual void Dispatch(IEvent& a_pEvent)
 		{
-			
+			OnEvent( dynamic_cast<T*>(&a_pEvent));
 		}
 
-		virtual void Dispatch() = 0
-		{
-		
-		}
 	};
 
-	class InputListener : public FuzzyEventListener<InputListener>
+	class InputListener : public FuzzyEventListener<InputEvent>
 	{
 	public:
 		InputListener()
@@ -47,9 +48,9 @@ namespace FuzzyLib
 			
 		}
 
-		virtual void Dispatch() override
+		virtual void OnEvent(InputEvent* a_Event) override
 		{
-
+			std::cout << "DISPATCHED DISPATCHED DISPATCHED DISPATCHED \n";
 		}
 	};
 }

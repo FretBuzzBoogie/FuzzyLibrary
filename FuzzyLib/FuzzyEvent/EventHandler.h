@@ -1,4 +1,6 @@
 #pragma once
+
+#include <iostream>
 #include <unordered_map>
 #include <typeindex>
 #include <typeinfo>
@@ -31,6 +33,8 @@ namespace FuzzyLib
 			IEventListener* m_pEventListener = nullptr;
 		};
 
+		void DeleteAllListeners();
+
 		EventSystem* const m_pEventSystem = nullptr;
 
 		std::unordered_map<std::type_index, FuzzyList<RegisteredListener*>*>* m_pUMapRegisteredListener = nullptr;
@@ -40,6 +44,10 @@ namespace FuzzyLib
 		~EventHandler();
 
 		const int GetCount() const;
+
+		void Fire(IEvent& a_IEvet);
+
+		void DebugLog();
 
 		template<typename EVENT_TYPE>
 		const int GetListenerCountOfType() const;
@@ -103,6 +111,12 @@ namespace FuzzyLib
 	template<typename EVENT_TYPE, typename LISTENER_TYPE>
 	void EventHandler::AddListener(EVENT_TYPE& a_EventType, LISTENER_TYPE& a_Listener)
 	{
+		static_assert(std::is_base_of<IEvent, EVENT_TYPE>::value,
+			"EventHandler::AddListener:: listener not added because given event type not a child of IEvent'");
+
+		static_assert(std::is_base_of<IEventListener, LISTENER_TYPE>::value,
+			"EventHandler::AddListener:: listener not added because given listener type not a child of IEventListener'");
+
 		FuzzyList<RegisteredListener*>* l_pListRegListener = nullptr;
 		const std::type_info& l_TypeIdToAdd = typeid(a_EventType);
 
@@ -115,8 +129,16 @@ namespace FuzzyLib
 		{
 			l_pListRegListener = m_pUMapRegisteredListener->at(l_TypeIdToAdd);
 		}
+
+		IEvent* l_pIEvent = (bool)std::is_base_of<IEvent, EVENT_TYPE>::value ? static_cast<IEvent*>(&a_EventType) : nullptr ;
+		IEventListener* l_pIEventListener = (bool)std::is_base_of<IEventListener, LISTENER_TYPE >::value ? static_cast<IEventListener*>(&a_Listener) : nullptr;
 		
-		RegisteredListener* l_newRegisteredListener = new RegisteredListener(static_cast<IEvent*>(&a_EventType), static_cast<IEventListener*>(&a_Listener));
+		if (l_pIEvent == nullptr || l_pIEventListener == nullptr)
+		{
+			return;
+		}
+
+		RegisteredListener* l_newRegisteredListener = new RegisteredListener(l_pIEvent, l_pIEventListener);
 		l_pListRegListener->Add(l_newRegisteredListener);
 	}
 }
