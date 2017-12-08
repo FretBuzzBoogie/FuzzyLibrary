@@ -13,7 +13,7 @@ namespace FuzzyLib
 {
 	class EventSystem;
 
-	class EventHandler
+	class EventHandler : public IFuzzyDebug
 	{
 	private:
 		class RegisteredListener
@@ -47,13 +47,13 @@ namespace FuzzyLib
 
 		void Fire(IEvent& a_IEvet);
 
-		void DebugLog();
-
 		const int GetListenerCountOfType(const std::type_info& a_type) const;
 
 		void RemoveListener(IEvent& a_pClassType, IEventListener& a_pListener);
 
 		void AddListener(IEvent& a_pClassType, IEventListener& a_pListener);
+
+		void DebugLog();
 	};
 
 

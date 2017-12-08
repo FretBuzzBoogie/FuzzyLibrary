@@ -74,6 +74,7 @@ int main(int argc, char** argv)
 
 	InputEvent m_InputEvt;
 	InputListener m_InputListener;
+	InputListener m_InputListener1;
 
 	EventSystem* const l_eventSystem = EventSystem::GetInstance();
 
@@ -84,7 +85,7 @@ int main(int argc, char** argv)
 	EventHandler* l_eventHandler2 = new EventHandler();
 
 	l_eventHandler1->AddListener(m_InputEvt, m_InputListener);
-	l_eventHandler2->AddListener(m_InputEvt, m_InputListener);
+	//l_eventHandler2->AddListener(m_InputEvt, m_InputListener1);
 
 	EventSystem::Fire(m_InputEvt);
 
