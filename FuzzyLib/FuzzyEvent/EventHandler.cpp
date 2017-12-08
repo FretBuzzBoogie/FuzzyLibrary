@@ -55,7 +55,6 @@ namespace FuzzyLib
 	void EventHandler::Fire(IEvent& a_IEvent)
 	{
 		const std::type_info& l_TypeID = typeid(a_IEvent);
-		std::cout << "Event type:: '"<<l_TypeID.name() << "'\n";
 
 		if (m_pUMapRegisteredListener->find(l_TypeID) == m_pUMapRegisteredListener->end())
 		{
@@ -76,13 +75,77 @@ namespace FuzzyLib
 
 	}
 
+	//Gets the count of listeners registered
+	const int EventHandler::GetListenerCountOfType(const std::type_info& a_type) const
+	{
+		if (m_pUMapRegisteredListener->find(a_type) != m_pUMapRegisteredListener->end())
+		{
+			return m_pUMapRegisteredListener->at(a_type)->GetCount();
+		}
+
+		return 0;
+	}
+
+	//Removes the listener bound to a particular event from that event handler registered list
+	void EventHandler::RemoveListener(IEvent& a_pClassType, IEventListener& a_pListener)
+	{
+		FuzzyList<RegisteredListener*>* l_pListRegListener = nullptr;
+		const std::type_info& l_TypeIdToAdd = typeid(a_pClassType);
+
+		if (m_pUMapRegisteredListener->find(l_TypeIdToAdd) != m_pUMapRegisteredListener->end())
+		{
+			RegisteredListener* l_pRegistrationToRemove = nullptr;
+
+			l_pListRegListener = m_pUMapRegisteredListener->at(l_TypeIdToAdd);
+			FuzzyList<RegisteredListener*>& l_refListRegistration = *l_pListRegListener;
+
+			int l_iRegListCount = l_pListRegListener->GetCount();
+			RegisteredListener& l_refRegistrationToCompare = RegisteredListener(&a_pClassType, &a_pListener);
+
+			for (int l_iRegistrationIndex = 0; l_iRegistrationIndex < l_iRegListCount; l_iRegistrationIndex++)
+			{
+				if (*(l_refListRegistration[l_iRegistrationIndex]) == l_refRegistrationToCompare)
+				{
+					l_pRegistrationToRemove = l_refListRegistration[l_iRegistrationIndex];
+					break;
+				}
+			}
+
+			if (l_pRegistrationToRemove != nullptr)
+			{
+				l_pListRegListener->Remove(l_pRegistrationToRemove);
+				delete l_pRegistrationToRemove;
+				l_pRegistrationToRemove = nullptr;
+			}
+		}
+	}
+
+	//Adds listener of type into the unordered list with type EVENT_TYPE
+	void EventHandler::AddListener(IEvent& a_EventType, IEventListener& a_Listener)
+	{
+		FuzzyList<RegisteredListener*>* l_pListRegListener = nullptr;
+		const std::type_info& l_TypeIdToAdd = typeid(a_EventType);
+
+		if (m_pUMapRegisteredListener->find(l_TypeIdToAdd) == m_pUMapRegisteredListener->end())
+		{
+			l_pListRegListener = new FuzzyList<RegisteredListener*>();
+			m_pUMapRegisteredListener->insert({ l_TypeIdToAdd, l_pListRegListener });
+		}
+		else
+		{
+			l_pListRegListener = m_pUMapRegisteredListener->at(l_TypeIdToAdd);
+		}
+		RegisteredListener* l_newRegisteredListener = new RegisteredListener(&a_EventType, &a_Listener);
+		l_pListRegListener->Add(l_newRegisteredListener);
+	}
+
 	void EventHandler::DebugLog()
 	{
 		for (auto l_iterator = m_pUMapRegisteredListener->begin();
 			l_iterator != m_pUMapRegisteredListener->end();
 			l_iterator++)
 		{
-			std::cout<<l_iterator->first.name()<<"\n";
+			std::cout << l_iterator->first.name() << "\n";
 		}
 	}
 

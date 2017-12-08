@@ -38,5 +38,10 @@ namespace FuzzyLib
 		{
 			
 		}
+
+		void PrintEventSuccess()
+		{
+			std::cout << "SUCCESSSUCCESSSUCCESSSUCCESSSUCCESS\n";
+		}
 	};
 }

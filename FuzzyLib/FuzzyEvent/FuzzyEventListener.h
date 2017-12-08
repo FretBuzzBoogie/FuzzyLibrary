@@ -50,7 +50,7 @@ namespace FuzzyLib
 
 		virtual void OnEvent(InputEvent* a_Event) override
 		{
-			std::cout << "DISPATCHED DISPATCHED DISPATCHED DISPATCHED \n";
+			a_Event->PrintEventSuccess();
 		}
 	};
 }
