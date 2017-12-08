@@ -15,14 +15,18 @@ namespace FuzzyLib
 
 	EventHandler::~EventHandler()
 	{
+		m_pUMapRegisteredListener->clear();
 		m_pEventSystem->UnregisterEventHandler(this);
 
 		delete m_pUMapRegisteredListener;
 		m_pUMapRegisteredListener = nullptr;
-	};
+	}
 
-	
-
+	//Get the unordered map's container count
+	const int EventHandler::GetCount() const
+	{
+		return m_pUMapRegisteredListener->size();
+	}
 #pragma endregion Event Handler
 
 #pragma region Registered Listener
@@ -31,7 +35,8 @@ namespace FuzzyLib
 	//includes List of registered Listeners for the event of a particular type
 	EventHandler::RegisteredListener::RegisteredListener(IEvent* a_pEventObject, IEventListener* a_pListenerObj)
 	{
-
+		m_pIEvent = a_pEventObject;
+		m_pEventListener = a_pListenerObj;
 	}
 
 	//Destructor for the Value of the unordered map

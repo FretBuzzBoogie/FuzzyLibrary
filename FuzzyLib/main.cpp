@@ -83,7 +83,7 @@ int main(int argc, char** argv)
 
 	l_eventHandler1->AddListener<InputEvent, InputListener>(m_InputEvt, m_InputListener);
 
-
+	std::cout<<"Container count::'"<<l_eventHandler1->GetCount()<<"'\n";
 
 	l_eventSystem->DebugLog();
 
