@@ -69,8 +69,20 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>$(SolutionDir)\Debug\Output\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)\Debug\Intermediate\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)$(Configuration)\$(PlatformShortName)\Output\</OutDir>
+    <IntDir>$(SolutionDir)$(Configuration)\$(PlatformShortName)\Intermediates\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)$(Configuration)\$(PlatformShortName)\Output\</OutDir>
+    <IntDir>$(SolutionDir)$(Configuration)\$(PlatformShortName)\Intermediates\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(SolutionDir)$(Configuration)\$(PlatformShortName)\Output\</OutDir>
+    <IntDir>$(SolutionDir)$(Configuration)\$(PlatformShortName)\Intermediates\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)$(Configuration)\$(PlatformShortName)\Output\</OutDir>
+    <IntDir>$(SolutionDir)$(Configuration)\$(PlatformShortName)\Intermediates\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
