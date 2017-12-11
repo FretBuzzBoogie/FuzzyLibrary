@@ -67,7 +67,7 @@ namespace FuzzyLib
 		for (int l_iRegisteredindex = 0; l_iRegisteredindex < l_iListCount; l_iRegisteredindex++)
 		{
 			if (&a_IEvent == l_reflstRegisteredListener[l_iRegisteredindex]->m_pIEvent
-				|| &a_IEvent == nullptr)
+				|| l_reflstRegisteredListener[l_iRegisteredindex]->m_pIEvent == nullptr)
 			{
 				l_reflstRegisteredListener[l_iRegisteredindex]->m_pEventListener->Dispatch(a_IEvent);
 			}
@@ -123,19 +123,26 @@ namespace FuzzyLib
 	//Adds listener of type into the unordered list with type EVENT_TYPE
 	void EventHandler::AddListener(IEvent& a_EventType, IEventListener& a_Listener)
 	{
-		FuzzyList<RegisteredListener*>* l_pListRegListener = nullptr;
 		const std::type_info& l_TypeIdToAdd = typeid(a_EventType);
+		AddListener(&a_EventType, &a_Listener, l_TypeIdToAdd);
+	}
 
-		if (m_pUMapRegisteredListener->find(l_TypeIdToAdd) == m_pUMapRegisteredListener->end())
+
+	//private func internall adds the listener
+	void EventHandler::AddListener(IEvent* a_EventType, IEventListener* a_Listener, const std::type_info& a_TypeIdToAdd)
+	{
+		FuzzyList<RegisteredListener*>* l_pListRegListener = nullptr;
+
+		if (m_pUMapRegisteredListener->find(a_TypeIdToAdd) == m_pUMapRegisteredListener->end())
 		{
 			l_pListRegListener = new FuzzyList<RegisteredListener*>();
-			m_pUMapRegisteredListener->insert({ l_TypeIdToAdd, l_pListRegListener });
+			m_pUMapRegisteredListener->insert({ a_TypeIdToAdd, l_pListRegListener });
 		}
 		else
 		{
-			l_pListRegListener = m_pUMapRegisteredListener->at(l_TypeIdToAdd);
+			l_pListRegListener = m_pUMapRegisteredListener->at(a_TypeIdToAdd);
 		}
-		RegisteredListener* l_newRegisteredListener = new RegisteredListener(&a_EventType, &a_Listener);
+		RegisteredListener* l_newRegisteredListener = new RegisteredListener(a_EventType, a_Listener);
 		l_pListRegListener->Add(l_newRegisteredListener);
 	}
 

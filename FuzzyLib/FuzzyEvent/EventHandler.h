@@ -38,6 +38,8 @@ namespace FuzzyLib
 		EventSystem* const m_pEventSystem = nullptr;
 
 		std::unordered_map<std::type_index, FuzzyList<RegisteredListener*>*>* m_pUMapRegisteredListener = nullptr;
+		
+		void AddListener(IEvent* a_EventType, IEventListener* a_Listener,const std::type_info& l_TypeIdToAdd);
 
 	public:
 		EventHandler();
@@ -51,10 +53,25 @@ namespace FuzzyLib
 
 		void RemoveListener(IEvent& a_pClassType, IEventListener& a_pListener);
 
+
 		void AddListener(IEvent& a_pClassType, IEventListener& a_pListener);
+
+		template<typename T_EVENT>
+		void AddListener(IEventListener& a_pListener);
 
 		void DebugLog();
 	};
+
+
+	//Adds a listener that listens to an event fired from the class Event of type T_EVENT
+	template<typename T_EVENT>
+	void EventHandler::AddListener(IEventListener& a_pListener)
+	{
+		static_assert(std::is_base_of<FuzzyEvent , T_EVENT>::value, "Given event is not of base type FuzzyEvent<Event_Type>");
+
+		const std::type_info& l_TypeIdToAdd = typeid(T_EVENT);
+		AddListener(nullptr, &a_pListener,l_TypeIdToAdd);
+	}
 
 
 	

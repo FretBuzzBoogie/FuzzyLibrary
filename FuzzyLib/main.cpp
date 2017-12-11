@@ -85,7 +85,11 @@ int main(int argc, char** argv)
 	EventHandler* l_eventHandler2 = new EventHandler();
 
 	l_eventHandler1->AddListener(m_InputEvt, m_InputListener);
-	//l_eventHandler2->AddListener(m_InputEvt, m_InputListener1);
+	l_eventHandler1->DebugLog();
+	std::cout << "\n\n\n\n";
+
+	l_eventHandler2->AddListener<InputEvent>(m_InputListener1);
+	l_eventHandler2->DebugLog();
 
 	EventSystem::Fire(m_InputEvt);
 
